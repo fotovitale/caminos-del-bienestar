@@ -212,8 +212,21 @@
                         Hacé clic en cualquier marcador para ver su especialidad, dirección en San Martín, abrir su catálogo con turnero o enviarle un WhatsApp.
                     </p>
                 </div>
-                <div class="small text-secondary">
-                    <span class="badge rounded-pill text-bg-light border">Coordenadas base: -33.081, -68.468</span>
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <div class="input-group input-group-sm" style="max-width: 310px;">
+                        <input type="text"
+                               id="input-buscar-calle-mapa"
+                               class="form-control custom-input py-1"
+                               placeholder="Ir a calle en San Martín (ej: Alem 245)...">
+                        <button class="btn btn-sumate-nav py-1 px-3" type="button" id="btn-buscar-calle-mapa" style="border-radius: 0 999px 999px 0;">
+                            <i data-lucide="locate" style="width:14px;height:14px;"></i>
+                            Ubicar
+                        </button>
+                    </div>
+                    <button type="button" id="btn-centrar-san-martin" class="btn-action-outline py-1 px-3" title="Volver al centro de General San Martín (-33.081, -68.468)">
+                        <i data-lucide="compass" style="width:15px;height:15px;"></i>
+                        Centro San Martín
+                    </button>
                 </div>
             </div>
 

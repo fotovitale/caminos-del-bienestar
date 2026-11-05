@@ -63,6 +63,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
         markersLayer = L.layerGroup().addTo(map);
         updateMapMarkers(emprendimientos);
+
+        // Conectar con la API del Mapa de General San Martín (/api/mapa-san-martin/)
+        fetch('/api/mapa-san-martin/')
+            .then(r => r.json())
+            .then(data => {
+                if (data && data.ok && Array.isArray(data.emprendimientos) && data.emprendimientos.length > 0) {
+                    if (emprendimientos.length === 0) {
+                        emprendimientos.push(...data.emprendimientos);
+                        renderCards(emprendimientos);
+                        updateMapMarkers(emprendimientos);
+                    }
+                }
+            })
+            .catch(() => {});
+
+        // Botón para volver al centro de General San Martín
+        document.getElementById('btn-centrar-san-martin')?.addEventListener('click', () => {
+            map.setView([-33.081, -68.468], 14, { animate: true });
+        });
+
+        // Buscador de calles en el mapa conectado a /api/geocodificar-san-martin/
+        const btnBuscarCalle = document.getElementById('btn-buscar-calle-mapa');
+        const inputBuscarCalle = document.getElementById('input-buscar-calle-mapa');
+        let searchPin = null;
+
+        async function buscarCalleEnSanMartin() {
+            const calle = inputBuscarCalle ? inputBuscarCalle.value.trim() : '';
+            if (!calle) return;
+
+            if (btnBuscarCalle) btnBuscarCalle.disabled = true;
+            try {
+                const resp = await fetch(`/api/geocodificar-san-martin/?direccion=${encodeURIComponent(calle)}`);
+                const res = await resp.json();
+                if (resp.ok && res.ok) {
+                    map.setView([res.latitud, res.longitud], 16, { animate: true });
+                    if (searchPin) map.removeLayer(searchPin);
+                    searchPin = L.marker([res.latitud, res.longitud]).addTo(map);
+                    searchPin.bindPopup(`
+                        <div class="small">
+                            <strong>📍 Ubicación en Gral. San Martín</strong><br>
+                            ${escapeHtml(res.direccion_consultada)}<br>
+                            <span class="text-secondary">Coords: ${res.latitud}, ${res.longitud}</span>
+                        </div>
+                    `).openPopup();
+                }
+            } catch (e) {
+                // ignorar error de red
+            } finally {
+                if (btnBuscarCalle) btnBuscarCalle.disabled = false;
+            }
+        }
+
+        btnBuscarCalle?.addEventListener('click', buscarCalleEnSanMartin);
+        inputBuscarCalle?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                buscarCalleEnSanMartin();
+            }
+        });
     }
 
     function createCustomIcon(catSlug) {

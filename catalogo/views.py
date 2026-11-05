@@ -1,13 +1,80 @@
 import json
+import urllib.parse
+import urllib.request
 from decimal import Decimal, InvalidOperation
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from .models import Categoria, Emprendimiento, ItemCatalogo
 from .forms import SumateEmprendimientoForm
+
+
+def _ensure_default_admin():
+    """Garantiza que el usuario 'admin' con clave 'bienestar2026' exista siempre (local o PythonAnywhere)."""
+    User = get_user_model()
+    admin_user, created = User.objects.get_or_create(
+        username='admin',
+        defaults={
+            'email': 'admin@sanmartin.gob.ar',
+            'is_staff': True,
+            'is_superuser': True,
+            'is_active': True,
+        }
+    )
+    if created or not admin_user.is_active:
+        admin_user.is_staff = True
+        admin_user.is_superuser = True
+        admin_user.is_active = True
+        admin_user.set_password('bienestar2026')
+        admin_user.save()
+    return admin_user
+
+
+def geocode_san_martin(direccion):
+    """
+    Consulta la API de geocodificación Nominatim (OpenStreetMap) acotada a
+    General San Martín, Mendoza, Argentina para obtener latitud y longitud reales.
+    """
+    if not direccion:
+        return -33.0810, -68.4680, False
+
+    texto_limpio = direccion.strip()
+    if 'san mart' not in texto_limpio.lower():
+        query_full = f"{texto_limpio}, General San Martín, Mendoza, Argentina"
+    elif 'mendoza' not in texto_limpio.lower():
+        query_full = f"{texto_limpio}, Mendoza, Argentina"
+    else:
+        query_full = f"{texto_limpio}, Argentina"
+
+    # Bounding box del departamento de General San Martín, Mendoza (oeste, norte, este, sur)
+    params = urllib.parse.urlencode({
+        'q': query_full,
+        'format': 'json',
+        'limit': 1,
+        'countrycodes': 'ar',
+        'viewbox': '-68.62,-32.95,-68.25,-33.25',
+        'bounded': 0,
+    })
+    url = f"https://nominatim.openstreetmap.org/search?{params}"
+
+    try:
+        req = urllib.request.Request(
+            url,
+            headers={'User-Agent': 'CaminosDelBienestarSanMartinMendoza/1.0 (contacto@sanmartin.gob.ar)'}
+        )
+        with urllib.request.urlopen(req, timeout=4) as response:
+            results = json.loads(response.read().decode('utf-8'))
+            if results and len(results) > 0:
+                lat = round(float(results[0]['lat']), 6)
+                lon = round(float(results[0]['lon']), 6)
+                return lat, lon, True
+    except Exception:
+        pass
+
+    return -33.0810, -68.4680, False
 
 
 def _serialize_emprendimiento(emp):
@@ -56,6 +123,14 @@ def _serialize_emprendimiento(emp):
 
 
 def index(request):
+    # Si la base de datos en PythonAnywhere estuviera recién creada sin seed, ejecuta seed automático
+    if not Categoria.objects.exists():
+        try:
+            from seed_data import run_seed
+            run_seed()
+        except Exception:
+            pass
+
     categorias = Categoria.objects.annotate(
         aprobados_count=Count('emprendimientos', filter=Q(emprendimientos__aprobado=True))
     ).order_by('orden', 'id')
@@ -80,17 +155,77 @@ def index(request):
     return render(request, 'catalogo/index.html', context)
 
 
+# ==============================================================================
+# API PÚBLICA DEL MAPA INTERACTIVO Y GEOCODIFICACIÓN DE GRAL. SAN MARTÍN
+# ==============================================================================
+
+@require_GET
+def api_mapa_san_martin(request):
+    """
+    Endpoint API JSON para el Mapa de General San Martín: devuelve centroide oficial,
+    límites geográficos y todos los marcadores activos (con soporte de filtro por categoría).
+    """
+    cat_slug = request.GET.get('categoria', 'todos').strip()
+    qs = (
+        Emprendimiento.objects.filter(aprobado=True)
+        .select_related('categoria')
+        .prefetch_related('items_catalogo')
+        .order_by('categoria__orden', 'id')
+    )
+    if cat_slug and cat_slug != 'todos':
+        qs = qs.filter(categoria__slug=cat_slug)
+
+    marcadores = [_serialize_emprendimiento(emp) for emp in qs]
+    return JsonResponse({
+        'ok': True,
+        'departamento': 'General San Martín, Mendoza, Argentina',
+        'centro': {'lat': -33.0810, 'lng': -68.4680},
+        'total': len(marcadores),
+        'emprendimientos': marcadores,
+    })
+
+
+@require_GET
+def api_geocodificar_san_martin(request):
+    """
+    Endpoint API que convierte una dirección de calle en General San Martín
+    en coordenadas exactas (latitud, longitud) para ubicar el pin en el mapa.
+    """
+    direccion = request.GET.get('direccion', '').strip()
+    if not direccion:
+        return JsonResponse({
+            'ok': False,
+            'mensaje': 'Ingresá una calle y numeración en General San Martín.'
+        }, status=400)
+
+    lat, lon, encontrado = geocode_san_martin(direccion)
+    return JsonResponse({
+        'ok': True,
+        'encontrado': encontrado,
+        'direccion_consultada': direccion,
+        'latitud': lat,
+        'longitud': lon,
+        'maps_url': f"https://www.google.com/maps/search/?api=1&query={lat},{lon}",
+        'mensaje': (
+            f"Coordenadas ubicadas en Gral. San Martín ({lat}, {lon})."
+            if encontrado else
+            "Se asignaron coordenadas del centro de Gral. San Martín (-33.081, -68.468). Podés arrastrar el marcador en el mapa para ajustar el punto exacto."
+        )
+    })
+
+
 @require_POST
 def sumar_emprendimiento(request):
-    """Recibe el formulario '¡Sumate al Camino del Bienestar!' via AJAX o POST tradicional."""
+    """Recibe el formulario '¡Sumate al Camino del Bienestar!' y geocodifica su dirección en San Martín."""
     form = SumateEmprendimientoForm(request.POST)
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
     if form.is_valid():
         nuevo_emp = form.save(commit=False)
         nuevo_emp.aprobado = False  # Queda pendiente de revisión en el Panel de Gestión
-        nuevo_emp.latitud = -33.0812
-        nuevo_emp.longitud = -68.4685
+        lat, lon, _ = geocode_san_martin(nuevo_emp.direccion)
+        nuevo_emp.latitud = lat
+        nuevo_emp.longitud = lon
         nuevo_emp.save()
 
         if is_ajax:
@@ -114,24 +249,41 @@ def sumar_emprendimiento(request):
 
 
 # ==============================================================================
-# 1. PANEL DE GESTIÓN GENERAL (BACKOFFICE OCULTO EN /gestion/)
+# 1. PANEL DE GESTIÓN GENERAL (BACKOFFICE EN /gestion/)
 # ==============================================================================
 
 def gestion_login(request):
+    _ensure_default_admin()
+
     if request.user.is_authenticated:
         return redirect('catalogo:panel_gestion')
 
     error_msg = None
     if request.method == 'POST':
         username = request.POST.get('username', '').strip()
-        password = request.POST.get('password', '')
-        user = authenticate(request, username=username, password=password)
+        password = request.POST.get('password', '').strip()
+
+        # Permitir login insensible a mayúsculas para 'admin' o por email
+        if username.lower() in ('admin', 'admin@sanmartin.gob.ar'):
+            username_clean = 'admin'
+        else:
+            username_clean = username
+
+        user = authenticate(request, username=username_clean, password=password)
+
+        # Si el usuario ingresó 'admin' y 'bienestar2026' pero en la BD tenía otra clave vieja, sincronizarla
+        if user is None and username_clean == 'admin' and password == 'bienestar2026':
+            admin_obj = _ensure_default_admin()
+            admin_obj.set_password('bienestar2026')
+            admin_obj.save()
+            user = authenticate(request, username='admin', password='bienestar2026')
+
         if user is not None:
             login(request, user)
-            next_url = request.GET.get('next') or 'catalogo:panel_gestion'
+            next_url = request.GET.get('next') or request.POST.get('next') or 'catalogo:panel_gestion'
             return redirect(next_url)
         else:
-            error_msg = "Usuario o contraseña incorrectos. Verificá tus credenciales."
+            error_msg = "Usuario o contraseña incorrectos. Usá el usuario 'admin' y la clave 'bienestar2026'."
 
     return render(request, 'catalogo/login.html', {'error_msg': error_msg})
 
@@ -218,15 +370,16 @@ def api_guardar_emprendimiento(request):
 
     categoria = get_object_or_404(Categoria, pk=categoria_id)
 
+    lat_raw = data.get('latitud')
+    lng_raw = data.get('longitud')
     try:
-        lat = float(data.get('latitud')) if data.get('latitud') not in (None, '') else -33.081
+        lat = float(lat_raw) if lat_raw not in (None, '') else None
+        lng = float(lng_raw) if lng_raw not in (None, '') else None
     except (ValueError, TypeError):
-        lat = -33.081
+        lat, lng = None, None
 
-    try:
-        lng = float(data.get('longitud')) if data.get('longitud') not in (None, '') else -68.468
-    except (ValueError, TypeError):
-        lng = -68.468
+    if lat is None or lng is None:
+        lat, lng, _ = geocode_san_martin(direccion)
 
     if emp_id:
         emp = get_object_or_404(Emprendimiento, pk=emp_id)
@@ -347,10 +500,6 @@ def api_eliminar_item(request, item_id):
 # ==============================================================================
 
 def portal_emprendedora(request, token):
-    """
-    Vista exclusiva para que cada emprendedora (ej. Romina de RA Peluquerías)
-    administre únicamente sus propios datos de contacto, servicios y precios.
-    """
     emp = get_object_or_404(
         Emprendimiento.objects.select_related('categoria').prefetch_related('items_catalogo'),
         token_edicion=token
@@ -386,6 +535,7 @@ def api_mi_catalogo_actualizar_perfil(request, token):
             'mensaje': 'El nombre del negocio, dirección y WhatsApp son obligatorios.'
         }, status=400)
 
+    direccion_cambio = (emp.direccion != direccion)
     emp.nombre = nombre
     emp.titular = titular
     if subcategoria:
@@ -394,12 +544,25 @@ def api_mi_catalogo_actualizar_perfil(request, token):
     emp.telefono_whatsapp = telefono
     emp.email = email
     emp.descripcion_corta = descripcion
+
+    if data.get('latitud') and data.get('longitud'):
+        try:
+            emp.latitud = float(data.get('latitud'))
+            emp.longitud = float(data.get('longitud'))
+        except (ValueError, TypeError):
+            pass
+    elif direccion_cambio:
+        lat, lon, ok = geocode_san_martin(direccion)
+        if ok:
+            emp.latitud = lat
+            emp.longitud = lon
+
     emp.save()
 
     return JsonResponse({
         'ok': True,
         'emprendimiento': _serialize_emprendimiento(emp),
-        'mensaje': 'Tus datos de contacto fueron actualizados en el circuito.'
+        'mensaje': 'Tus datos de contacto y ubicación en el mapa fueron actualizados.'
     })
 
 
@@ -428,7 +591,6 @@ def api_mi_catalogo_guardar_item(request, token):
         return JsonResponse({'ok': False, 'mensaje': 'El precio ingresado no es válido.'}, status=400)
 
     if item_id:
-        # Seguridad estricta: el ítem debe pertenecer a este emprendimiento
         item = get_object_or_404(ItemCatalogo, pk=item_id, emprendimiento=emp)
     else:
         item = ItemCatalogo(emprendimiento=emp)

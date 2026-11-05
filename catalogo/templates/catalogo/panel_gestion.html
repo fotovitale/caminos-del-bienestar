@@ -284,7 +284,16 @@
 
                             <div class="col-12">
                                 <label class="form-label small fw-semibold">Dirección Física en General San Martín *</label>
-                                <input type="text" id="emp_direccion" class="form-control custom-input" required placeholder="Ej: Av. Alem 245, General San Martín, Mendoza">
+                                <div class="input-group">
+                                    <input type="text" id="emp_direccion" class="form-control custom-input" required placeholder="Ej: Av. Alem 245, General San Martín, Mendoza">
+                                    <button type="button" id="btn-geocodificar-admin" class="btn btn-sumate-nav px-3" style="border-radius: 0 12px 12px 0;" title="Obtener coordenadas automáticamente desde la API del Mapa de San Martín">
+                                        <i data-lucide="map-pin" style="width:16px;height:16px;"></i>
+                                        Ubicar en Mapa
+                                    </button>
+                                </div>
+                                <small class="text-secondary" style="font-size: 0.75rem;">
+                                    Tocá "Ubicar en Mapa" para calcular automáticamente la Latitud y Longitud en General San Martín.
+                                </small>
                             </div>
 
                             <div class="col-md-4">

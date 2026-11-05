@@ -348,11 +348,19 @@ def run_seed():
             )
         print(f"  ✓ Emprendimiento cargado: {emp_obj.nombre} ({emp_obj.titular}) -> Link: /mi-catalogo/{emp_obj.token_edicion}/")
 
-    # Superusuario por defecto
+    # Superusuario por defecto (asegura siempre usuario 'admin' / clave 'bienestar2026')
     User = get_user_model()
-    if not User.objects.filter(username='admin').exists():
-        User.objects.create_superuser('admin', 'admin@sanmartin.gob.ar', 'bienestar2026')
-        print("  ✓ Superusuario creado: usuario 'admin' / contraseña 'bienestar2026'")
+    admin_user, created = User.objects.get_or_create(
+        username='admin',
+        defaults={'email': 'admin@sanmartin.gob.ar', 'is_staff': True, 'is_superuser': True, 'is_active': True}
+    )
+    admin_user.email = 'admin@sanmartin.gob.ar'
+    admin_user.is_staff = True
+    admin_user.is_superuser = True
+    admin_user.is_active = True
+    admin_user.set_password('bienestar2026')
+    admin_user.save()
+    print("  ✓ Superusuario configurado: usuario 'admin' / contraseña 'bienestar2026'")
 
     print("\n✨ Seed completado con éxito: 6 categorías y 12 emprendimientos locales activos.")
 

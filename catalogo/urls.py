@@ -7,6 +7,10 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('sumar-emprendimiento/', views.sumar_emprendimiento, name='sumar_emprendimiento'),
 
+    # API Pública del Mapa de General San Martín y Geocodificación de Calles
+    path('api/mapa-san-martin/', views.api_mapa_san_martin, name='api_mapa_san_martin'),
+    path('api/geocodificar-san-martin/', views.api_geocodificar_san_martin, name='api_geocodificar_san_martin'),
+
     # 1. Panel de Gestión General (Backoffice Oculto)
     path('gestion/', views.panel_gestion, name='panel_gestion'),
     path('gestion/login/', views.gestion_login, name='gestion_login'),

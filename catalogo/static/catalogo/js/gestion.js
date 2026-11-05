@@ -421,6 +421,32 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-nuevo-emprendimiento')?.addEventListener('click', () => openEmpModal(null));
     document.getElementById('btn-nuevo-emprendimiento-2')?.addEventListener('click', () => openEmpModal(null));
 
+    // Botón "Ubicar en Mapa" conectado a la API /api/geocodificar-san-martin/
+    document.getElementById('btn-geocodificar-admin')?.addEventListener('click', async () => {
+        const dirInput = document.getElementById('emp_direccion');
+        const direccion = dirInput ? dirInput.value.trim() : '';
+        if (!direccion) {
+            showToast('Escribí primero la calle y número en San Martín', 'warning');
+            return;
+        }
+        const btn = document.getElementById('btn-geocodificar-admin');
+        if (btn) btn.disabled = true;
+        try {
+            const resp = await fetch(`/api/geocodificar-san-martin/?direccion=${encodeURIComponent(direccion)}`);
+            const res = await resp.json();
+            if (resp.ok && res.ok) {
+                document.getElementById('emp_latitud').value = res.latitud;
+                document.getElementById('emp_longitud').value = res.longitud;
+                document.getElementById('emp_maps_url').value = res.maps_url;
+                showToast(res.mensaje, res.encontrado ? 'success' : 'info');
+            }
+        } catch (err) {
+            showToast('No se pudo conectar con el servicio de geocodificación.', 'error');
+        } finally {
+            if (btn) btn.disabled = false;
+        }
+    });
+
     document.getElementById('form-admin-emprendimiento')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const payload = {
