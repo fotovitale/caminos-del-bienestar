@@ -56,9 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollWheelZoom: false,
         }).setView([-33.081, -68.468], 14);
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &bull; General San Martín, Mendoza',
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors · General San Martín, Mendoza',
         }).addTo(map);
 
         markersLayer = L.layerGroup().addTo(map);
