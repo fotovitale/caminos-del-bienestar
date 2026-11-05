@@ -1,0 +1,462 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Catálogo: {{ emp.nombre }} · Caminos del Bienestar</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Estilos Caminos del Bienestar -->
+    <link rel="stylesheet" href="{% static 'catalogo/css/styles.css' %}">
+</head>
+<body>
+
+    <!-- Fondo de Ondas Suaves Verdes y Celestes -->
+    <div class="waves-background" aria-hidden="true">
+        <svg class="wave-top" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradTop" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#A8E6CF" stop-opacity="0.55" />
+                    <stop offset="50%" stop-color="#76B89D" stop-opacity="0.30" />
+                    <stop offset="100%" stop-color="#89CFF0" stop-opacity="0.55" />
+                </linearGradient>
+            </defs>
+            <path fill="url(#gradTop)" d="M0,128L60,138.7C120,149,240,171,360,160C480,149,600,107,720,106.7C840,107,960,149,1080,165.3C1200,181,1320,171,1380,165.3L1440,160L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path>
+        </svg>
+
+        <svg class="wave-middle" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradMid" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#89CFF0" stop-opacity="0.35" />
+                    <stop offset="100%" stop-color="#A8E6CF" stop-opacity="0.40" />
+                </linearGradient>
+            </defs>
+            <path fill="url(#gradMid)" d="M0,96L80,117.3C160,139,320,181,480,176C640,171,800,117,960,101.3C1120,85,1280,107,1360,117.3L1440,128L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
+        </svg>
+
+        <svg class="wave-bottom" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradBot" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#A8E6CF" stop-opacity="0.45" />
+                    <stop offset="50%" stop-color="#5BC0BE" stop-opacity="0.30" />
+                    <stop offset="100%" stop-color="#89CFF0" stop-opacity="0.48" />
+                </linearGradient>
+            </defs>
+            <path fill="url(#gradBot)" d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,224C840,235,960,213,1080,186.7C1200,160,1320,128,1380,112L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+        </svg>
+    </div>
+
+    <!-- ==================================================================
+         BARRA DE NAVEGACIÓN DEL PORTAL INDIVIDUAL DE EMPRENDEDORA
+         ================================================================== -->
+    <nav class="navbar navbar-expand-lg navbar-glass sticky-top">
+        <div class="container">
+            <div class="navbar-brand d-flex align-items-center gap-2">
+                <span class="brand-badge">
+                    <i data-lucide="leaf" style="width:22px;height:22px;"></i>
+                </span>
+                <div>
+                    <span class="fw-bold d-block lh-1" style="font-family: var(--font-heading); font-size: 1.12rem; color: var(--text-primary);">
+                        Portal de Autogestión · Caminos del Bienestar
+                    </span>
+                    <small class="text-secondary" style="font-size: 0.74rem;">
+                        Espacio exclusivo de <strong id="nav-emp-nombre">{{ emp.nombre }}</strong>
+                    </small>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <a href="{% url 'catalogo:index' %}" class="btn-action-outline px-3 py-2">
+                    <i data-lucide="external-link" style="width:15px;height:15px;"></i>
+                    Ver en el Catálogo Público
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4 pb-5">
+
+        <!-- Cabecera de Bienvenida Personalizada -->
+        <div class="sumate-section-card p-4 mb-4">
+            <div class="row align-items-center g-3">
+                <div class="col-lg-8">
+                    <span class="badge rounded-pill px-3 py-2 mb-2" style="background: rgba(168,230,207,0.55); color:#2C3E50; font-weight:700;">
+                        ✨ Link Privado de Autogestión · {{ emp.categoria.nombre }}
+                    </span>
+                    <h1 class="h3 fw-bold mb-1">
+                        ¡Hola, <span class="text-gradient-brand" id="header-titular">{{ emp.titular|default:emp.nombre }}</span>!
+                    </h1>
+                    <p class="text-secondary small mb-0">
+                        Desde este panel exclusivo de <strong>{{ emp.nombre }}</strong> podés agregar nuevos servicios o productos, actualizar tus precios al instante y mantener al día tus datos de contacto y turnos en General San Martín.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <div class="d-inline-flex align-items-center gap-3 p-3 rounded-4" style="background: rgba(255,255,255,0.88); border:1px solid rgba(118,184,157,0.35);">
+                        <div class="text-start">
+                            <span class="small text-secondary d-block">Servicios activos en tu tienda</span>
+                            <span class="h4 fw-bold mb-0" id="kpi-mis-servicios">{{ emp.items_catalogo.count }}</span>
+                        </div>
+                        <div class="kpi-icon-box" style="width:46px;height:46px;">
+                            <i data-lucide="shopping-bag" style="width:22px;height:22px;color:#4A8F74;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- ==========================================================
+                 COLUMNA IZQUIERDA: GESTIÓN DE SERVICIOS Y PRECIOS
+                 ========================================================== -->
+            <div class="col-12 col-lg-7">
+                <div class="admin-emp-row p-4 h-100">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div>
+                            <h2 class="h5 fw-bold mb-0 d-flex align-items-center gap-2">
+                                <i data-lucide="tags" style="width:20px;height:20px;color:#4A8F74;"></i>
+                                Mi Catálogo de Servicios, Stock y Precios
+                            </h2>
+                            <p class="small text-secondary mb-0">Los cambios que guardes aquí se actualizan inmediatamente en la web pública.</p>
+                        </div>
+                    </div>
+
+                    <!-- Formulario para Agregar / Editar Servicio o Precio -->
+                    <form id="form-mi-item" class="p-3 rounded-4 mb-4" style="background: rgba(168, 230, 207, 0.22); border: 1.5px solid rgba(118, 184, 157, 0.45);">
+                        <input type="hidden" id="mi_item_id">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-bold" id="mi-item-form-titulo" style="color: var(--text-primary);">
+                                ➕ Cargar Nuevo Servicio o Producto
+                            </span>
+                            <button type="button" id="btn-cancelar-mi-item" class="btn btn-sm btn-link text-secondary p-0 d-none">
+                                Cancelar edición
+                            </button>
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col-md-7">
+                                <label class="form-label small fw-semibold mb-1">Nombre del Servicio o Producto *</label>
+                                <input type="text" id="mi_item_nombre" class="form-control custom-input" required placeholder="Ej: Nutrición Capilar / Limpieza Facial">
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label small fw-semibold mb-1">Precio ($ ARS) *</label>
+                                <input type="number" step="0.01" id="mi_item_precio" class="form-control custom-input" required placeholder="Ej: 25000">
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label small fw-semibold mb-1">Rubro Interno</label>
+                                <input type="text" id="mi_item_categoria" class="form-control custom-input" value="Tratamientos" placeholder="Ej: Tratamientos, Cortes...">
+                            </div>
+                            <div class="col-md-7">
+                                <label class="form-label small fw-semibold mb-1">Detalle o Duración</label>
+                                <input type="text" id="mi_item_detalle" class="form-control custom-input" placeholder="Ej: 50 min · Hidratación profunda">
+                            </div>
+                            <div class="col-12 d-flex flex-wrap align-items-center justify-content-between gap-2 pt-2 mt-1">
+                                <div class="d-flex gap-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="mi_item_turno" checked>
+                                        <label class="form-check-label small" for="mi_item_turno">Permite sacar turno</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="mi_item_disponible" checked>
+                                        <label class="form-check-label small" for="mi_item_disponible">Disponible</label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-sumate-nav py-2 px-4">
+                                    <i data-lucide="save" style="width:16px;height:16px;"></i>
+                                    <span id="btn-mi-item-texto">Guardar en Mi Catálogo</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Listado de Servicios Actuales -->
+                    <div id="contenedor-mis-items">
+                        <!-- Renderizado dinámicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+                 COLUMNA DERECHA: DATOS DE CONTACTO, WHATSAPP Y EMAIL
+                 ========================================================== -->
+            <div class="col-12 col-lg-5">
+                <div class="admin-emp-row p-4">
+                    <h2 class="h5 fw-bold mb-1 d-flex align-items-center gap-2">
+                        <i data-lucide="user-Check" style="width:20px;height:20px;color:#3A9694;"></i>
+                        Mis Datos de Contacto y Turnos
+                    </h2>
+                    <p class="small text-secondary mb-3">
+                        Estos datos aparecen en la cabecera de tu catálogo y son los que reciben las reservas de turnos por WhatsApp y Email.
+                    </p>
+
+                    <form id="form-mi-perfil">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Nombre del Emprendimiento *</label>
+                                <input type="text" id="perf_nombre" class="form-control custom-input" value="{{ emp.nombre }}" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Nombre de la Profesional / Titular</label>
+                                <input type="text" id="perf_titular" class="form-control custom-input" value="{{ emp.titular }}" placeholder="Ej: Romina">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Especialidad / Subcategoría</label>
+                                <input type="text" id="perf_subcategoria" class="form-control custom-input" value="{{ emp.subcategoria }}">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Teléfono / WhatsApp (para recibir turnos) *</label>
+                                <input type="text" id="perf_telefono" class="form-control custom-input" value="{{ emp.telefono_whatsapp }}" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Correo Electrónico (Email)</label>
+                                <input type="email" id="perf_email" class="form-control custom-input" value="{{ emp.email }}" placeholder="contacto@ejemplo.com.ar">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Dirección en General San Martín *</label>
+                                <input type="text" id="perf_direccion" class="form-control custom-input" value="{{ emp.direccion }}" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Descripción de tu Espacio</label>
+                                <textarea id="perf_descripcion" class="form-control custom-input" rows="3">{{ emp.descripcion_corta }}</textarea>
+                            </div>
+                            <div class="col-12 pt-1">
+                                <button type="submit" class="btn-catalogo-precios mb-0 py-2">
+                                    <i data-lucide="check-circle" style="width:17px;height:17px;"></i>
+                                    Actualizar Mis Datos de Contacto
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    {{ emp_json|json_script:"mi-catalogo-data" }}
+    {% csrf_token %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dataEl = document.getElementById('mi-catalogo-data');
+            let emp = dataEl ? JSON.parse(dataEl.textContent) : null;
+            if (!emp) return;
+
+            const token = emp.token_edicion;
+            const contenedorItems = document.getElementById('contenedor-mis-items');
+            const kpiServicios = document.getElementById('kpi-mis-servicios');
+
+            function getCsrf() {
+                const el = document.querySelector('input[name="csrfmiddlewaretoken"]');
+                return el ? el.value : '';
+            }
+
+            function toast(title, icon = 'success') {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon,
+                        title,
+                        showConfirmButton: false,
+                        timer: 2500,
+                        background: '#F6FBF9',
+                        color: '#2C3E50',
+                    });
+                }
+            }
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
+            }
+
+            function resetFormItem() {
+                document.getElementById('mi_item_id').value = '';
+                document.getElementById('mi_item_nombre').value = '';
+                document.getElementById('mi_item_precio').value = '';
+                document.getElementById('mi_item_categoria').value = 'Tratamientos';
+                document.getElementById('mi_item_detalle').value = '';
+                document.getElementById('mi_item_turno').checked = true;
+                document.getElementById('mi_item_disponible').checked = true;
+                document.getElementById('mi-item-form-titulo').textContent = '➕ Cargar Nuevo Servicio o Producto';
+                document.getElementById('btn-mi-item-texto').textContent = 'Guardar en Mi Catálogo';
+                document.getElementById('btn-cancelar-mi-item').classList.add('d-none');
+            }
+
+            function renderMisItems() {
+                const items = emp.todos_items || [];
+                if (kpiServicios) kpiServicios.textContent = items.length;
+
+                if (items.length === 0) {
+                    contenedorItems.innerHTML = `
+                        <div class="text-center py-4 rounded-3" style="background: rgba(246,251,249,0.9); border: 1px dashed rgba(118,184,157,0.4);">
+                            <p class="small text-secondary mb-0">Todavía no cargaste servicios o productos. Usá el formulario de arriba para agregar el primero.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                contenedorItems.innerHTML = items.map(item => `
+                    <div class="service-item-row">
+                        <div>
+                            <div class="fw-bold d-flex align-items-center gap-2 flex-wrap" style="color:#2C3E50;">
+                                <span class="badge rounded-pill text-bg-light border" style="font-size:0.7rem;">
+                                    ${escapeHtml(item.categoria_item || 'Servicio')}
+                                </span>
+                                <span>${escapeHtml(item.nombre)}</span>
+                                ${!item.disponible ? '<span class="badge bg-secondary-subtle text-secondary">Pausado</span>' : ''}
+                            </div>
+                            <div class="small text-secondary mt-1">
+                                ${escapeHtml(item.detalle || 'Disponible en catálogo')}
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="service-price-tag">${escapeHtml(item.precio_formateado)}</span>
+                            <button type="button"
+                                    class="btn-action-outline py-1 px-2 js-edit-mi-item"
+                                    data-item-id="${item.id}"
+                                    title="Editar precio o nombre">
+                                <i data-lucide="edit-2" style="width:14px;height:14px;"></i>
+                                Editar
+                            </button>
+                            <button type="button"
+                                    class="btn-action-outline text-danger border-danger-subtle py-1 px-2 js-del-mi-item"
+                                    data-item-id="${item.id}"
+                                    title="Eliminar">
+                                <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                if (window.lucide) window.lucide.createIcons();
+            }
+
+            document.getElementById('btn-cancelar-mi-item')?.addEventListener('click', resetFormItem);
+
+            // Guardar o Editar Servicio/Precio
+            document.getElementById('form-mi-item')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const payload = {
+                    id: document.getElementById('mi_item_id').value || null,
+                    nombre: document.getElementById('mi_item_nombre').value,
+                    precio: document.getElementById('mi_item_precio').value,
+                    categoria_item: document.getElementById('mi_item_categoria').value,
+                    detalle: document.getElementById('mi_item_detalle').value,
+                    permite_turno: document.getElementById('mi_item_turno').checked,
+                    disponible: document.getElementById('mi_item_disponible').checked,
+                };
+
+                const resp = await fetch(`/mi-catalogo/${token}/api/item/guardar/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrf(),
+                    },
+                    body: JSON.stringify(payload),
+                });
+                const res = await resp.json();
+                if (resp.ok && res.ok) {
+                    emp = res.emprendimiento;
+                    resetFormItem();
+                    renderMisItems();
+                    toast(res.mensaje);
+                } else {
+                    Swal.fire({ icon: 'warning', title: 'Revisá los datos', text: res.mensaje });
+                }
+            });
+
+            // Eventos de editar / eliminar ítem
+            contenedorItems?.addEventListener('click', async (e) => {
+                const btnEdit = e.target.closest('.js-edit-mi-item');
+                if (btnEdit) {
+                    const id = parseInt(btnEdit.getAttribute('data-item-id'), 10);
+                    const item = (emp.todos_items || []).find(i => i.id === id);
+                    if (!item) return;
+
+                    document.getElementById('mi_item_id').value = item.id;
+                    document.getElementById('mi_item_nombre').value = item.nombre;
+                    document.getElementById('mi_item_precio').value = item.precio;
+                    document.getElementById('mi_item_categoria').value = item.categoria_item || 'Tratamientos';
+                    document.getElementById('mi_item_detalle').value = item.detalle;
+                    document.getElementById('mi_item_turno').checked = item.permite_turno;
+                    document.getElementById('mi_item_disponible').checked = item.disponible;
+                    document.getElementById('mi-item-form-titulo').textContent = `✏️ Editando: ${item.nombre}`;
+                    document.getElementById('btn-mi-item-texto').textContent = 'Actualizar Precio / Servicio';
+                    document.getElementById('btn-cancelar-mi-item').classList.remove('d-none');
+                    document.getElementById('mi_item_precio').focus();
+                    return;
+                }
+
+                const btnDel = e.target.closest('.js-del-mi-item');
+                if (btnDel) {
+                    const id = parseInt(btnDel.getAttribute('data-item-id'), 10);
+                    const resp = await fetch(`/mi-catalogo/${token}/api/item/${id}/eliminar/`, {
+                        method: 'POST',
+                        headers: { 'X-CSRFToken': getCsrf() },
+                    });
+                    const res = await resp.json();
+                    if (resp.ok && res.ok) {
+                        emp = res.emprendimiento;
+                        renderMisItems();
+                        toast(res.mensaje, 'info');
+                    }
+                }
+            });
+
+            // Actualizar datos de perfil
+            document.getElementById('form-mi-perfil')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const payload = {
+                    nombre: document.getElementById('perf_nombre').value,
+                    titular: document.getElementById('perf_titular').value,
+                    subcategoria: document.getElementById('perf_subcategoria').value,
+                    telefono: document.getElementById('perf_telefono').value,
+                    email: document.getElementById('perf_email').value,
+                    direccion: document.getElementById('perf_direccion').value,
+                    descripcion: document.getElementById('perf_descripcion').value,
+                };
+
+                const resp = await fetch(`/mi-catalogo/${token}/api/perfil/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrf(),
+                    },
+                    body: JSON.stringify(payload),
+                });
+                const res = await resp.json();
+                if (resp.ok && res.ok) {
+                    emp = res.emprendimiento;
+                    document.getElementById('nav-emp-nombre').textContent = emp.nombre;
+                    document.getElementById('header-titular').textContent = emp.titular || emp.nombre;
+                    toast(res.mensaje);
+                } else {
+                    Swal.fire({ icon: 'warning', title: 'Atención', text: res.mensaje });
+                }
+            });
+
+            renderMisItems();
+            if (window.lucide) window.lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
+

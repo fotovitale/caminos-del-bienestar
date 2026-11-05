@@ -1,0 +1,994 @@
+/* ==========================================================================
+   CAMINOS DEL BIENESTAR · GENERAL SAN MARTÍN, MENDOZA
+   Identidad Visual: Naturaleza, Delicadeza, Bienestar e Identidad Local
+   ========================================================================== */
+
+:root {
+    /* Paleta de Colores Oficial */
+    --mint-soft: #A8E6CF;
+    --sage-calm: #76B89D;
+    --sage-deep: #4A8F74;
+    --sky-inst: #89CFF0;
+    --teal-inst: #5BC0BE;
+    --teal-dark: #3A9694;
+
+    /* Superficies Glassmorphism & Fondos */
+    --bg-base: #F6FBF9;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --card-bg-hover: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(255, 255, 255, 0.72);
+    --soft-border: rgba(118, 184, 157, 0.25);
+
+    /* Textos (Sin usar negro puro) */
+    --text-primary: #2C3E50;
+    --text-secondary: #546E7A;
+    --text-muted: #78909C;
+
+    /* Sombras Delicadas */
+    --shadow-soft: 0 10px 30px -5px rgba(44, 62, 80, 0.06), 0 4px 12px -2px rgba(91, 192, 190, 0.08);
+    --shadow-hover: 0 18px 38px -6px rgba(44, 62, 80, 0.11), 0 8px 20px -4px rgba(91, 192, 190, 0.15);
+    --shadow-glow: 0 0 0 4px rgba(168, 230, 207, 0.45);
+
+    /* Tipografías */
+    --font-heading: 'Outfit', sans-serif;
+    --font-serif-accent: 'Playfair Display', serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+
+    /* Radios y Transiciones */
+    --radius-sm: 12px;
+    --radius-md: 18px;
+    --radius-lg: 24px;
+    --radius-pill: 9999px;
+    --transition-smooth: all 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    background-color: var(--bg-base);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.serif-italic {
+    font-family: var(--font-serif-accent);
+    font-style: italic;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   FONDO MULTICAPA CON ONDAS SUAVES (VERDE PASTEL -> CELESTE INSTITUCIONAL)
+   ========================================================================== */
+.waves-background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 12% 15%, rgba(168, 230, 207, 0.28) 0%, transparent 48%),
+        radial-gradient(circle at 88% 22%, rgba(137, 207, 240, 0.28) 0%, transparent 52%),
+        radial-gradient(circle at 50% 85%, rgba(91, 192, 190, 0.18) 0%, transparent 58%),
+        linear-gradient(160deg, #F7FCF9 0%, #F2F9FC 52%, #F6FBF9 100%);
+}
+
+.waves-background svg {
+    position: absolute;
+    width: 100%;
+    left: 0;
+}
+
+.wave-top {
+    top: 0;
+    height: 420px;
+    opacity: 0.55;
+}
+
+.wave-middle {
+    top: 34%;
+    height: 460px;
+    opacity: 0.4;
+}
+
+.wave-bottom {
+    bottom: 0;
+    height: 380px;
+    opacity: 0.5;
+}
+
+/* ==========================================================================
+   BARRA DE NAVEGACIÓN GLASSMORPHISM
+   ========================================================================== */
+.navbar-glass {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(118, 184, 157, 0.2);
+    padding: 0.85rem 0;
+    transition: var(--transition-smooth);
+}
+
+.brand-badge {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, var(--mint-soft) 0%, var(--sky-inst) 100%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    box-shadow: 0 4px 12px rgba(91, 192, 190, 0.25);
+}
+
+.nav-link-custom {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--radius-pill);
+    transition: var(--transition-smooth);
+}
+
+.nav-link-custom:hover {
+    color: var(--sage-deep);
+    background: rgba(168, 230, 207, 0.22);
+}
+
+.btn-sumate-nav {
+    background: linear-gradient(135deg, var(--sage-calm) 0%, var(--teal-inst) 100%);
+    color: #fff !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.55rem 1.25rem;
+    border-radius: var(--radius-pill);
+    border: none;
+    box-shadow: 0 4px 14px rgba(91, 192, 190, 0.32);
+    transition: var(--transition-smooth);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.btn-sumate-nav:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(91, 192, 190, 0.42);
+    color: #fff;
+}
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+.hero-section {
+    padding: 3.5rem 0 2rem;
+}
+
+.location-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.42rem 1.1rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(137, 207, 240, 0.55);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(137, 207, 240, 0.16);
+}
+
+.location-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--teal-inst);
+    box-shadow: 0 0 0 4px rgba(91, 192, 190, 0.25);
+}
+
+.hero-title {
+    font-size: clamp(2.15rem, 4.4vw, 3.45rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-top: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.text-gradient-brand {
+    background: linear-gradient(120deg, var(--sage-deep) 0%, var(--teal-inst) 55%, #3B9EC9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+    font-size: 1.08rem;
+    color: var(--text-secondary);
+    max-width: 720px;
+    margin: 0 auto 1.75rem;
+}
+
+/* ==========================================================================
+   SECCIÓN A: CATÁLOGO DE 6 BOTONES PRINCIPALES (GRILLA RESPONSIVE 6 COLUMNAS)
+   ========================================================================== */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 576px) {
+    .categories-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1100px) {
+    .categories-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 1rem;
+    }
+}
+
+.category-card-btn {
+    appearance: none;
+    border: 1.5px solid rgba(118, 184, 157, 0.28);
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--radius-md);
+    padding: 1.35rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.category-card-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, rgba(168, 230, 207, 0.25) 0%, rgba(137, 207, 240, 0.25) 100%);
+    opacity: 0;
+    transition: var(--transition-smooth);
+}
+
+.category-card-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--teal-inst);
+    background: var(--card-bg-hover);
+}
+
+.category-card-btn:hover::before {
+    opacity: 0.6;
+}
+
+.category-card-btn.active {
+    background: linear-gradient(145deg, rgba(168, 230, 207, 0.45) 0%, rgba(137, 207, 240, 0.45) 100%);
+    border-color: var(--sage-deep);
+    box-shadow: var(--shadow-hover), var(--shadow-glow);
+    transform: translateY(-4px);
+}
+
+.category-icon-wrapper {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.45) 0%, rgba(137, 207, 240, 0.45) 100%);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.85rem;
+    transition: var(--transition-smooth);
+    position: relative;
+    z-index: 1;
+}
+
+.category-card-btn.active .category-icon-wrapper,
+.category-card-btn:hover .category-icon-wrapper {
+    background: linear-gradient(135deg, var(--sage-calm) 0%, var(--teal-inst) 100%);
+    color: #ffffff;
+    transform: scale(1.07);
+}
+
+.category-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.02rem;
+    color: var(--text-primary);
+    margin-bottom: 0.3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.category-desc {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+    line-height: 1.35;
+    position: relative;
+    z-index: 1;
+}
+
+.category-count-badge {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--sage-deep);
+    border: 1px solid rgba(118, 184, 157, 0.35);
+    z-index: 2;
+}
+
+/* Barra de filtro activo y buscador */
+.filter-toolbar {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--soft-border);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1.25rem;
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-ver-todos {
+    background: rgba(168, 230, 207, 0.28);
+    color: var(--text-primary);
+    border: 1px solid rgba(118, 184, 157, 0.45);
+    border-radius: var(--radius-pill);
+    padding: 0.45rem 1.1rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: var(--transition-smooth);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-ver-todos:hover,
+.btn-ver-todos.active {
+    background: linear-gradient(135deg, var(--sage-calm) 0%, var(--teal-inst) 100%);
+    color: #fff;
+    border-color: transparent;
+}
+
+.search-input-group {
+    position: relative;
+}
+
+.search-input-group .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.search-input-group input {
+    padding-left: 2.5rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(118, 184, 157, 0.35);
+    background: rgba(255, 255, 255, 0.92);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.search-input-group input:focus {
+    box-shadow: var(--shadow-glow);
+    border-color: var(--teal-inst);
+}
+
+/* ==========================================================================
+   SECCIÓN B: TARJETAS DE EMPRENDIMIENTOS (GLASSMORPHISM)
+   ========================================================================== */
+.business-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--soft-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-smooth);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.business-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(91, 192, 190, 0.55);
+    background: var(--card-bg-hover);
+}
+
+.business-card-media {
+    position: relative;
+    height: 185px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--mint-soft), var(--sky-inst));
+}
+
+.business-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.business-card:hover .business-card-media img {
+    transform: scale(1.06);
+}
+
+.badge-categoria-top {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(6px);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.76rem;
+    padding: 0.32rem 0.78rem;
+    border-radius: var(--radius-pill);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.12);
+}
+
+.badge-subcategoria {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.38) 0%, rgba(137, 207, 240, 0.38) 100%);
+    color: var(--text-primary);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-pill);
+    margin-bottom: 0.65rem;
+    border: 1px solid rgba(118, 184, 157, 0.3);
+}
+
+.business-card-body {
+    padding: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.business-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.45rem;
+    color: var(--text-primary);
+}
+
+.business-desc {
+    font-size: 0.89rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.business-meta-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.1rem 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    border-top: 1px dashed rgba(118, 184, 157, 0.35);
+    padding-top: 0.85rem;
+}
+
+.business-meta-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    margin-bottom: 0.5rem;
+}
+
+.business-meta-list li svg {
+    flex-shrink: 0;
+    color: var(--teal-dark);
+    margin-top: 2px;
+}
+
+/* Botones de Acción de la Tarjeta */
+.btn-catalogo-precios {
+    width: 100%;
+    background: linear-gradient(135deg, var(--sage-calm) 0%, var(--teal-inst) 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.68rem 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 14px rgba(91, 192, 190, 0.28);
+    margin-bottom: 0.65rem;
+}
+
+.btn-catalogo-precios:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(91, 192, 190, 0.4);
+    color: #ffffff;
+}
+
+.card-secondary-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.45rem;
+}
+
+.btn-action-outline {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(118, 184, 157, 0.38);
+    color: var(--text-primary);
+    border-radius: 10px;
+    padding: 0.45rem 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+.btn-action-outline:hover {
+    background: rgba(168, 230, 207, 0.35);
+    border-color: var(--sage-deep);
+    color: var(--text-primary);
+}
+
+.btn-action-whatsapp {
+    background: rgba(37, 211, 102, 0.12);
+    border: 1px solid rgba(37, 211, 102, 0.38);
+    color: #1B7F43;
+}
+
+.btn-action-whatsapp:hover {
+    background: #25D366;
+    border-color: #25D366;
+    color: #ffffff;
+}
+
+/* Animación de entrada de tarjetas */
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-animate {
+    animation: fadeSlideUp 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ==========================================================================
+   MODAL DE SERVICIOS / STOCK Y PRECIOS
+   ========================================================================== */
+.modal-glass .modal-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(168, 230, 207, 0.6);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 60px rgba(44, 62, 80, 0.18);
+    color: var(--text-primary);
+}
+
+.modal-header-brand {
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.38) 0%, rgba(137, 207, 240, 0.38) 100%);
+    border-bottom: 1px solid rgba(118, 184, 157, 0.25);
+    padding: 1.35rem 1.5rem;
+}
+
+.service-item-row {
+    background: rgba(246, 251, 249, 0.9);
+    border: 1px solid rgba(118, 184, 157, 0.28);
+    border-radius: var(--radius-sm);
+    padding: 0.95rem 1.15rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: var(--transition-smooth);
+}
+
+.service-item-row:hover {
+    background: #ffffff;
+    border-color: var(--teal-inst);
+    box-shadow: 0 4px 12px rgba(91, 192, 190, 0.12);
+}
+
+.service-price-tag {
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.45) 0%, rgba(137, 207, 240, 0.45) 100%);
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+    border: 1px solid rgba(91, 192, 190, 0.35);
+}
+
+/* ==========================================================================
+   SECCIÓN C: MAPA INTERACTIVO DEL CIRCUITO (LEAFLET.JS)
+   ========================================================================== */
+.map-wrapper-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1.5px solid var(--soft-border);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    box-shadow: var(--shadow-soft);
+}
+
+#mapa-san-martin {
+    width: 100%;
+    height: 490px;
+    border-radius: var(--radius-md);
+    z-index: 1;
+}
+
+/* Pines personalizados de Leaflet */
+.custom-map-pin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pin-bubble {
+    width: 38px;
+    height: 38px;
+    border-radius: 50% 50% 50% 4px;
+    transform: rotate(-45deg);
+    background: linear-gradient(135deg, var(--sage-calm) 0%, var(--teal-inst) 100%);
+    border: 2.5px solid #ffffff;
+    box-shadow: 0 6px 14px rgba(44, 62, 80, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.pin-bubble-inner {
+    transform: rotate(45deg);
+    color: #ffffff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 16px !important;
+    box-shadow: 0 12px 28px rgba(44, 62, 80, 0.16) !important;
+    border: 1px solid rgba(118, 184, 157, 0.35);
+    padding: 4px;
+}
+
+.map-popup-card {
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    min-width: 220px;
+}
+
+/* ==========================================================================
+   SECCIÓN D: FORMULARIO "¡SUMATE AL CAMINO DEL BIENESTAR!"
+   ========================================================================== */
+.sumate-section-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 250, 246, 0.92) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(118, 184, 157, 0.35);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    padding: 2.5rem;
+}
+
+.custom-input {
+    border-radius: 12px;
+    border: 1px solid rgba(118, 184, 157, 0.4);
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--text-primary);
+    padding: 0.68rem 0.95rem;
+    font-size: 0.92rem;
+    transition: var(--transition-smooth);
+}
+
+.custom-input:focus {
+    border-color: var(--teal-inst);
+    box-shadow: var(--shadow-glow);
+    background: #ffffff;
+}
+
+/* Footer */
+.footer-glass {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(118, 184, 157, 0.25);
+    padding: 2.5rem 0;
+    margin-top: 4rem;
+}
+
+/* ==========================================================================
+   ESTILOS ADICIONALES: LOGIN & PANEL DE GESTIÓN (BACKOFFICE CUSTOM)
+   ========================================================================== */
+
+.login-viewport {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.login-glass-card {
+    width: 100%;
+    max-width: 440px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1.5px solid rgba(118, 184, 157, 0.38);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 2.2rem;
+    box-shadow: 0 20px 50px rgba(44, 62, 80, 0.1), 0 6px 18px rgba(91, 192, 190, 0.12);
+}
+
+.kpi-glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid var(--soft-border);
+    border-radius: var(--radius-md);
+    padding: 1.4rem 1.5rem;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: var(--transition-smooth);
+    height: 100%;
+}
+
+.kpi-glass-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--teal-inst);
+}
+
+.kpi-glass-card.kpi-alert {
+    border-color: rgba(245, 158, 11, 0.55);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(254, 243, 199, 0.55) 100%);
+}
+
+.kpi-icon-box {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.5) 0%, rgba(137, 207, 240, 0.5) 100%);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.kpi-number {
+    font-family: var(--font-heading);
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text-primary);
+}
+
+.pending-tray-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(235, 250, 244, 0.92) 100%);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(91, 192, 190, 0.45);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-soft);
+}
+
+.pending-item-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(118, 184, 157, 0.35);
+    border-radius: var(--radius-md);
+    padding: 1.2rem;
+    transition: var(--transition-smooth);
+}
+
+.pending-item-card:hover {
+    border-color: var(--teal-inst);
+    box-shadow: var(--shadow-soft);
+}
+
+.admin-emp-row {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--soft-border);
+    border-radius: var(--radius-md);
+    padding: 1.15rem 1.35rem;
+    margin-bottom: 0.85rem;
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-soft);
+}
+
+.admin-emp-row:hover {
+    background: var(--card-bg-hover);
+    border-color: rgba(91, 192, 190, 0.55);
+    box-shadow: var(--shadow-hover);
+}
+
+.status-pill-active {
+    background: rgba(168, 230, 207, 0.45);
+    color: #1E6B4E;
+    border: 1px solid rgba(74, 143, 116, 0.35);
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 0.25rem 0.7rem;
+    border-radius: var(--radius-pill);
+}
+
+.status-pill-paused {
+    background: rgba(254, 226, 226, 0.65);
+    color: #991B1B;
+    border: 1px solid rgba(248, 113, 113, 0.4);
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 0.25rem 0.7rem;
+    border-radius: var(--radius-pill);
+}
+
+.filter-chip-btn {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(118, 184, 157, 0.38);
+    color: var(--text-primary);
+    border-radius: var(--radius-pill);
+    padding: 0.42rem 0.95rem;
+    font-size: 0.84rem;
+    font-weight: 600;
+    transition: var(--transition-smooth);
+}
+
+.filter-chip-btn:hover,
+.filter-chip-btn.active {
+    background: linear-gradient(135deg, var(--sage-calm) 0%, var(--teal-inst) 100%);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+
+/* ==========================================================================
+   TIENDA / CATÁLOGO E-COMMERCE POR PRESTADOR & TURNERO DIRECTO
+   ========================================================================== */
+
+.ecommerce-store-header {
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.42) 0%, rgba(137, 207, 240, 0.42) 100%);
+    border-bottom: 1px solid rgba(118, 184, 157, 0.3);
+    padding: 1.5rem 1.75rem;
+}
+
+.store-contact-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.85rem;
+}
+
+.store-contact-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(118, 184, 157, 0.35);
+    color: var(--text-primary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.35rem 0.8rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+}
+
+.ecommerce-item-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1.5px solid rgba(118, 184, 157, 0.3);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: var(--transition-smooth);
+    box-shadow: 0 6px 18px rgba(44, 62, 80, 0.05);
+}
+
+.ecommerce-item-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--teal-inst);
+    box-shadow: var(--shadow-hover);
+}
+
+.ecommerce-price-badge {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.5) 0%, rgba(137, 207, 240, 0.5) 100%);
+    padding: 0.3rem 0.9rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(91, 192, 190, 0.4);
+}
+
+.btn-sacar-turno {
+    background: linear-gradient(135deg, var(--sage-calm) 0%, var(--teal-inst) 100%);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.86rem;
+    padding: 0.55rem 1.05rem;
+    border-radius: var(--radius-pill);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    box-shadow: 0 4px 12px rgba(91, 192, 190, 0.3);
+    transition: var(--transition-smooth);
+}
+
+.btn-sacar-turno:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(91, 192, 190, 0.45);
+    color: #ffffff;
+}
+
+.turnero-panel-box {
+    background: linear-gradient(145deg, rgba(240, 251, 247, 0.98) 0%, rgba(235, 248, 254, 0.98) 100%);
+    border: 2px solid var(--teal-inst);
+    border-radius: var(--radius-md);
+    padding: 1.4rem;
+    box-shadow: 0 12px 30px rgba(44, 62, 80, 0.12);
+}

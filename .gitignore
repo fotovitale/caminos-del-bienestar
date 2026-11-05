@@ -1,0 +1,23 @@
+# Python & Entorno Virtual
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos Estáticos Compilados y Media
+staticfiles/
+media/
+
+# Base de Datos Local
+db.sqlite3
+db.sqlite3-journal
+
+# Variables de Entorno e IDE
+.env
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

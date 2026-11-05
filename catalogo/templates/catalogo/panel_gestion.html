@@ -1,0 +1,433 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión General · Caminos del Bienestar (Gral. San Martín)</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Estilos Caminos del Bienestar -->
+    <link rel="stylesheet" href="{% static 'catalogo/css/styles.css' %}">
+</head>
+<body>
+
+    <!-- Fondo de Ondas Suaves Verdes y Celestes -->
+    <div class="waves-background" aria-hidden="true">
+        <svg class="wave-top" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradTop" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#A8E6CF" stop-opacity="0.55" />
+                    <stop offset="50%" stop-color="#76B89D" stop-opacity="0.30" />
+                    <stop offset="100%" stop-color="#89CFF0" stop-opacity="0.55" />
+                </linearGradient>
+            </defs>
+            <path fill="url(#gradTop)" d="M0,128L60,138.7C120,149,240,171,360,160C480,149,600,107,720,106.7C840,107,960,149,1080,165.3C1200,181,1320,171,1380,165.3L1440,160L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path>
+        </svg>
+
+        <svg class="wave-middle" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradMid" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#89CFF0" stop-opacity="0.35" />
+                    <stop offset="100%" stop-color="#A8E6CF" stop-opacity="0.40" />
+                </linearGradient>
+            </defs>
+            <path fill="url(#gradMid)" d="M0,96L80,117.3C160,139,320,181,480,176C640,171,800,117,960,101.3C1120,85,1280,107,1360,117.3L1440,128L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
+        </svg>
+
+        <svg class="wave-bottom" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradBot" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#A8E6CF" stop-opacity="0.45" />
+                    <stop offset="50%" stop-color="#5BC0BE" stop-opacity="0.30" />
+                    <stop offset="100%" stop-color="#89CFF0" stop-opacity="0.48" />
+                </linearGradient>
+            </defs>
+            <path fill="url(#gradBot)" d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,224C840,235,960,213,1080,186.7C1200,160,1320,128,1380,112L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+        </svg>
+    </div>
+
+    <!-- ==================================================================
+         BARRA DE NAVEGACIÓN DEL BACKOFFICE GENERAL
+         ================================================================== -->
+    <nav class="navbar navbar-expand-lg navbar-glass sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none" href="{% url 'catalogo:panel_gestion' %}">
+                <span class="brand-badge">
+                    <i data-lucide="leaf" style="width:22px;height:22px;"></i>
+                </span>
+                <div>
+                    <span class="fw-bold d-block lh-1" style="font-family: var(--font-heading); font-size: 1.15rem; color: var(--text-primary);">
+                        Caminos del Bienestar
+                    </span>
+                    <small class="text-secondary" style="font-size: 0.74rem; letter-spacing: 0.03em;">
+                        Panel General de Administración · Gral. San Martín
+                    </small>
+                </div>
+            </a>
+
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <button type="button" id="btn-nuevo-emprendimiento" class="btn-sumate-nav">
+                    <i data-lucide="plus-circle" style="width:17px;height:17px;"></i>
+                    <span class="d-none d-sm-inline">Nuevo Emprendimiento</span>
+                </button>
+                <a href="{% url 'catalogo:index' %}" class="btn-action-outline px-3 py-2">
+                    <i data-lucide="external-link" style="width:15px;height:15px;"></i>
+                    <span class="d-none d-md-inline">Ver Web Pública</span>
+                </a>
+                <a href="{% url 'catalogo:gestion_logout' %}" class="btn-action-outline px-3 py-2 text-danger border-danger-subtle" title="Cerrar sesión">
+                    <i data-lucide="log-out" style="width:15px;height:15px;"></i>
+                    <span class="d-none d-md-inline">Salir</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4 pb-5">
+
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-4">
+            <div>
+                <h1 class="h3 fw-bold mb-1">
+                    Hola, <span class="text-gradient-brand">{{ request.user.username|capfirst }}</span> ✨
+                </h1>
+                <p class="text-secondary small mb-0">
+                    Gestioná los emprendimientos de las 6 categorías, aprobá solicitudes nuevas y copiá el <strong>Link Exclusivo de Autogestión</strong> para enviarle a cada emprendedora.
+                </p>
+            </div>
+        </div>
+
+        <!-- ==============================================================
+             1. RESUMEN SUPERIOR (3 KPI CARDS)
+             ============================================================== -->
+        <section class="row g-3 mb-4" aria-label="Indicadores Clave">
+            <div class="col-12 col-md-4">
+                <div class="kpi-glass-card">
+                    <div>
+                        <span class="small text-secondary fw-semibold d-block mb-1">Emprendimientos Activos</span>
+                        <div class="kpi-number" id="kpi-activos">{{ kpi_activos }}</div>
+                        <small class="text-secondary" style="font-size: 0.78rem;">Con catálogo y turnero en línea</small>
+                    </div>
+                    <div class="kpi-icon-box">
+                        <i data-lucide="store" style="width:26px;height:26px;color:#4A8F74;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="kpi-glass-card {% if kpi_pendientes > 0 %}kpi-alert{% endif %}" id="kpi-card-pendientes">
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="small text-secondary fw-semibold">Solicitudes Pendientes</span>
+                            <span id="badge-alerta-pendientes"
+                                  class="badge rounded-pill bg-warning text-dark {% if kpi_pendientes == 0 %}d-none{% endif %}"
+                                  style="font-size: 0.7rem;">
+                                ¡Nuevas!
+                            </span>
+                        </div>
+                        <div class="kpi-number" id="kpi-pendientes">{{ kpi_pendientes }}</div>
+                        <small class="text-secondary" style="font-size: 0.78rem;">Recibidas desde el formulario web</small>
+                    </div>
+                    <div class="kpi-icon-box">
+                        <i data-lucide="inbox" style="width:26px;height:26px;color:#D97706;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="kpi-glass-card">
+                    <div>
+                        <span class="small text-secondary fw-semibold d-block mb-1">Servicios y Productos Cargados</span>
+                        <div class="kpi-number" id="kpi-servicios">{{ kpi_servicios }}</div>
+                        <small class="text-secondary" style="font-size: 0.78rem;">Total en las tiendas del circuito</small>
+                    </div>
+                    <div class="kpi-icon-box">
+                        <i data-lucide="tags" style="width:26px;height:26px;color:#3A9694;"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================================================
+             2. BANDEJA DE "SOLICITUDES PENDIENTES" (aprobado=False)
+             ============================================================== -->
+        <section id="seccion-bandeja-pendientes" class="mb-5">
+            <div class="pending-tray-card">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="brand-badge" style="width:36px;height:36px;border-radius:11px;">
+                            <i data-lucide="bell-ring" style="width:18px;height:18px;"></i>
+                        </span>
+                        <div>
+                            <h2 class="h5 fw-bold mb-0">Bandeja de Solicitudes Pendientes de Aprobación</h2>
+                            <p class="small text-secondary mb-0">Emprendedoras que completaron el formulario público "¡Sumate al Camino del Bienestar!"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="contenedor-pendientes" class="row g-3">
+                    <!-- Renderizado por gestion.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================================================
+             3. GESTOR VISUAL DE EMPRENDIMIENTOS, PRECIOS Y LINKS INDIVIDUALES
+             ============================================================== -->
+        <section id="seccion-gestor-crud">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
+                <div>
+                    <h2 class="h4 fw-bold mb-1 d-flex align-items-center gap-2">
+                        <i data-lucide="sliders" style="width:22px;height:22px;color:#4A8F74;"></i>
+                        Directorio de Prestadores, Precios y Links de Autogestión
+                    </h2>
+                    <p class="small text-secondary mb-0">
+                        Usá el botón <strong>"Copiar Link de Autogestión"</strong> para compartirle a cada emprendedora su acceso exclusivo donde solo edita su catálogo.
+                    </p>
+                </div>
+                <button type="button" id="btn-nuevo-emprendimiento-2" class="btn-sumate-nav align-self-start align-self-md-center">
+                    <i data-lucide="plus" style="width:17px;height:17px;"></i>
+                    Crear Emprendimiento
+                </button>
+            </div>
+
+            <!-- Barra de Filtro por las 6 Categorías + Buscador -->
+            <div class="filter-toolbar mb-4">
+                <div class="row g-3 align-items-center">
+                    <div class="col-12 col-lg-8">
+                        <div class="d-flex flex-wrap gap-2" id="filtros-categorias-admin">
+                            <button type="button" class="filter-chip-btn active" data-cat-slug="todos">
+                                Todos
+                            </button>
+                            {% for cat in categorias %}
+                            <button type="button" class="filter-chip-btn" data-cat-slug="{{ cat.slug }}">
+                                {{ cat.nombre }}
+                            </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="search-input-group">
+                            <i data-lucide="search" class="search-icon" style="width:17px;height:17px;"></i>
+                            <input type="search"
+                                   id="admin-search-input"
+                                   class="form-control"
+                                   placeholder="Buscar por negocio, profesional, servicio...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="contenedor-emprendimientos-admin">
+                <!-- Renderizado reactivamente por gestion.js -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================================================================
+         MODAL 1: CREAR / EDITAR DATOS DEL EMPRENDIMIENTO
+         ================================================================== -->
+    <div class="modal fade modal-glass" id="modalEditarEmprendimiento" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content overflow-hidden">
+                <div class="modal-header modal-header-brand">
+                    <div>
+                        <span class="badge rounded-pill mb-1" style="background: rgba(255,255,255,0.9); color:#2C3E50; font-weight:600;">
+                            Ficha del Circuito · General San Martín
+                        </span>
+                        <h4 class="modal-title fw-bold mb-0" id="modalEmpTitulo">Nuevo Emprendimiento</h4>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <form id="form-admin-emprendimiento">
+                    <div class="modal-body p-4">
+                        <input type="hidden" id="emp_id">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Nombre del Emprendimiento *</label>
+                                <input type="text" id="emp_nombre" class="form-control custom-input" required placeholder="Ej: RA Peluquerías">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Nombre de la Profesional / Titular</label>
+                                <input type="text" id="emp_titular" class="form-control custom-input" placeholder="Ej: Romina">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Categoría *</label>
+                                <select id="emp_categoria" class="form-select custom-input" required>
+                                    {% for cat in categorias %}
+                                    <option value="{{ cat.id }}">{{ cat.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Especialidad / Subcategoría *</label>
+                                <input type="text" id="emp_subcategoria" class="form-control custom-input" required placeholder="Ej: Estilismo Profesional & Salud Capilar">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Teléfono / WhatsApp *</label>
+                                <input type="text" id="emp_telefono" class="form-control custom-input" required placeholder="Ej: +54 9 263 455-1234">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Correo Electrónico (Email)</label>
+                                <input type="email" id="emp_email" class="form-control custom-input" placeholder="Ej: contacto@rapeluquerias.com.ar">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Dirección Física en General San Martín *</label>
+                                <input type="text" id="emp_direccion" class="form-control custom-input" required placeholder="Ej: Av. Alem 245, General San Martín, Mendoza">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Latitud (Mapa)</label>
+                                <input type="number" step="any" id="emp_latitud" class="form-control custom-input" value="-33.0810">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Longitud (Mapa)</label>
+                                <input type="number" step="any" id="emp_longitud" class="form-control custom-input" value="-68.4680">
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="emp_aprobado" checked>
+                                    <label class="form-check-label small fw-semibold" for="emp_aprobado">
+                                        Publicado en la web
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Descripción Corta</label>
+                                <textarea id="emp_descripcion" class="form-control custom-input" rows="2" placeholder="Presentación del espacio o profesional..."></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">URL de Imagen / Foto (opcional)</label>
+                                <input type="url" id="emp_imagen_url" class="form-control custom-input" placeholder="https://...">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Link de Google Maps (opcional)</label>
+                                <input type="url" id="emp_maps_url" class="form-control custom-input" placeholder="https://www.google.com/maps/...">
+                            </div>
+
+                            <div class="col-12" id="bloque-notas-solicitud" style="display:none;">
+                                <label class="form-label small fw-semibold text-warning-emphasis">
+                                    📋 Servicios y Precios Declarados en la Solicitud Web:
+                                </label>
+                                <textarea id="emp_notas_iniciales" class="form-control custom-input" rows="2" style="background: rgba(254, 243, 199, 0.35);"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer border-top-0 px-4 pb-4 pt-0">
+                        <button type="button" class="btn btn-light rounded-pill px-3" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn-sumate-nav px-4 py-2">
+                            <i data-lucide="check" style="width:17px;height:17px;"></i>
+                            Guardar Emprendimiento
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================================================================
+         MODAL 2: GESTOR DE CATÁLOGO DE PRECIOS (SERVICIOS / STOCK)
+         ================================================================== -->
+    <div class="modal fade modal-glass" id="modalGestionPrecios" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content overflow-hidden">
+                <div class="modal-header modal-header-brand">
+                    <div>
+                        <span class="badge rounded-pill mb-1" style="background: rgba(255,255,255,0.9); color:#2C3E50; font-weight:600;">
+                            Gestor de Servicios, Stock y Tarifas
+                        </span>
+                        <h4 class="modal-title fw-bold mb-0" id="preciosModalNombreEmp">Emprendimiento</h4>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <div id="preciosNotaInicial" class="alert alert-warning small rounded-3 py-2 px-3 mb-3 d-none"></div>
+
+                    <!-- Formulario rápido para Agregar o Editar Servicio/Precio -->
+                    <form id="form-admin-item" class="p-3 rounded-4 mb-4" style="background: rgba(168, 230, 207, 0.2); border: 1px solid rgba(118, 184, 157, 0.4);">
+                        <input type="hidden" id="item_id">
+                        <input type="hidden" id="item_emp_id">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-bold" id="form-item-titulo" style="color: var(--text-primary);">
+                                ➕ Agregar Nuevo Servicio o Producto al Catálogo
+                            </span>
+                            <button type="button" id="btn-cancelar-edicion-item" class="btn btn-sm btn-link text-secondary p-0 d-none">
+                                Cancelar edición
+                            </button>
+                        </div>
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-4">
+                                <label class="form-label small mb-1">Servicio / Producto *</label>
+                                <input type="text" id="item_nombre" class="form-control form-control-sm custom-input" required placeholder="Ej: Nutrición Capilar">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small mb-1">Rubro Interno</label>
+                                <input type="text" id="item_categoria_item" class="form-control form-control-sm custom-input" value="Tratamientos" placeholder="Ej: Tratamientos">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small mb-1">Detalle / Duración</label>
+                                <input type="text" id="item_detalle" class="form-control form-control-sm custom-input" placeholder="Ej: 50 min">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small mb-1">Precio ($) *</label>
+                                <input type="number" step="0.01" id="item_precio" class="form-control form-control-sm custom-input" required placeholder="25000">
+                            </div>
+                            <div class="col-12 d-flex flex-wrap justify-content-between align-items-center mt-2 pt-1 gap-2">
+                                <div class="d-flex gap-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="item_permite_turno" checked>
+                                        <label class="form-check-label small" for="item_permite_turno">Botón "Sacar Turno"</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="item_disponible" checked>
+                                        <label class="form-check-label small" for="item_disponible">Disponible</label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-sumate-nav py-1 px-3" style="font-size: 0.84rem;">
+                                    <i data-lucide="save" style="width:15px;height:15px;"></i>
+                                    <span id="btn-item-submit-text">Guardar Servicio</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Lista de Servicios Cargados -->
+                    <h6 class="fw-bold small text-uppercase text-secondary mb-2">
+                        Servicios y Productos Cargados (<span id="contador-items-modal">0</span>)
+                    </h6>
+                    <div id="lista-items-admin">
+                        <!-- Renderizado dinámicamente -->
+                    </div>
+                </div>
+
+                <div class="modal-footer border-top-0 px-4 pb-4 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Listo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ emprendimientos_json|json_script:"admin-emprendimientos-data" }}
+    {% csrf_token %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'catalogo/js/gestion.js' %}"></script>
+</body>
+</html>

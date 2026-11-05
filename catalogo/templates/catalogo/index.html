@@ -1,0 +1,500 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caminos del Bienestar · Multi-Catálogo y Turnos en General San Martín, Mendoza</title>
+    <meta name="description" content="Plataforma multi-catálogo, reserva de turnos online y circuito geográfico de bienestar, estética, crecimiento personal, bodegas, alojamiento y productos en General San Martín, Mendoza.">
+
+    <!-- Google Fonts: Outfit, Playfair Display & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Leaflet.js CSS (Mapa Interactivo General San Martín) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Estilos Personalizados (Paleta Verde Salvia / Celeste Institucional & Ondas SVG) -->
+    <link rel="stylesheet" href="{% static 'catalogo/css/styles.css' %}">
+</head>
+<body>
+
+    <!-- ==================================================================
+         FONDO MULTICAPA CON ONDAS SUAVES (VERDE PASTEL A CELESTE CLARO)
+         ================================================================== -->
+    <div class="waves-background" aria-hidden="true">
+        <svg class="wave-top" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradTop" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#A8E6CF" stop-opacity="0.55" />
+                    <stop offset="50%" stop-color="#76B89D" stop-opacity="0.30" />
+                    <stop offset="100%" stop-color="#89CFF0" stop-opacity="0.55" />
+                </linearGradient>
+            </defs>
+            <path fill="url(#gradTop)" d="M0,128L60,138.7C120,149,240,171,360,160C480,149,600,107,720,106.7C840,107,960,149,1080,165.3C1200,181,1320,171,1380,165.3L1440,160L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path>
+        </svg>
+
+        <svg class="wave-middle" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradMid" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#89CFF0" stop-opacity="0.35" />
+                    <stop offset="100%" stop-color="#A8E6CF" stop-opacity="0.40" />
+                </linearGradient>
+            </defs>
+            <path fill="url(#gradMid)" d="M0,96L80,117.3C160,139,320,181,480,176C640,171,800,117,960,101.3C1120,85,1280,107,1360,117.3L1440,128L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
+        </svg>
+
+        <svg class="wave-bottom" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradBot" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#A8E6CF" stop-opacity="0.45" />
+                    <stop offset="50%" stop-color="#5BC0BE" stop-opacity="0.30" />
+                    <stop offset="100%" stop-color="#89CFF0" stop-opacity="0.48" />
+                </linearGradient>
+            </defs>
+            <path fill="url(#gradBot)" d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,224C840,235,960,213,1080,186.7C1200,160,1320,128,1380,112L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+        </svg>
+    </div>
+
+    <!-- ==================================================================
+         BARRA DE NAVEGACIÓN SUPERIOR (ACCESO DISCRETO EN ÍCONO DEL LOGO)
+         ================================================================== -->
+    <nav class="navbar navbar-expand-lg navbar-glass sticky-top">
+        <div class="container">
+            <div class="navbar-brand d-flex align-items-center gap-2 m-0">
+                <!-- Acceso discreto al Panel de Gestión haciendo clic en el ícono de la marca -->
+                <a href="{% url 'catalogo:panel_gestion' %}" class="brand-badge text-decoration-none" aria-label="Caminos del Bienestar">
+                    <i data-lucide="leaf" style="width:22px;height:22px;"></i>
+                </a>
+                <a href="#inicio" class="text-decoration-none">
+                    <span class="fw-bold d-block lh-1" style="font-family: var(--font-heading); font-size: 1.15rem; color: var(--text-primary);">
+                        Caminos del Bienestar
+                    </span>
+                    <small class="text-secondary" style="font-size: 0.74rem; letter-spacing: 0.03em;">
+                        General San Martín · Mendoza
+                    </small>
+                </a>
+            </div>
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-label="Abrir menú">
+                <i data-lucide="menu"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-1">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#seccion-categorias">Categorías</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#seccion-directorio">Catálogos y Turnos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#seccion-mapa">Mapa del Circuito</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="#seccion-sumate" class="btn-sumate-nav">
+                        <i data-lucide="plus-circle" style="width:17px;height:17px;"></i>
+                        Sumá tu Emprendimiento
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================================================================
+         CABECERA / HERO PRINCIPAL
+         ================================================================== -->
+    <header id="inicio" class="hero-section text-center">
+        <div class="container">
+            <div class="location-pill">
+                <span class="location-dot"></span>
+                <span>Multi-Catálogo & Turnero Directo · General San Martín, Mendoza</span>
+            </div>
+
+            <h1 class="hero-title">
+                Conectá con tu equilibrio en los <br class="d-none d-md-inline">
+                <span class="text-gradient-brand">Caminos del Bienestar</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                Explorá los catálogos individuales de estilistas, cosmetólogas, profesionales de crecimiento personal,
+                bodegas, alojamientos y productos naturales de General San Martín. Consultá precios actualizados y reservá tu turno al instante.
+            </p>
+        </div>
+    </header>
+
+    <main class="container pb-5">
+
+        <!-- ==============================================================
+             SECCIÓN A: GRILLA DE 6 BOTONES PRINCIPALES (CATEGORÍAS)
+             ============================================================== -->
+        <section id="seccion-categorias" class="mb-4" aria-label="Categorías del Circuito">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                <div>
+                    <h2 class="h5 fw-bold mb-0 d-flex align-items-center gap-2">
+                        <i data-lucide="compass" style="width:20px;height:20px;color:#4A8F74;"></i>
+                        Explorá los 6 Rubros del Circuito
+                    </h2>
+                    <p class="small text-secondary mb-0">Seleccioná un rubro para ver sus prestadores, abrir su tienda de servicios y sacar turno</p>
+                </div>
+                <button type="button" id="btn-ver-todos" class="btn-ver-todos active">
+                    <i data-lucide="layout-grid" style="width:16px;height:16px;"></i>
+                    Ver todos ({{ total_emprendimientos }})
+                </button>
+            </div>
+
+            <!-- Fila armónica de 6 columnas en Desktop / Grilla adaptable en Móvil -->
+            <div class="categories-grid">
+                {% for cat in categorias %}
+                <button type="button"
+                        class="category-card-btn"
+                        data-cat-slug="{{ cat.slug }}"
+                        data-cat-nombre="{{ cat.nombre }}">
+                    <span class="category-count-badge">{{ cat.aprobados_count }}</span>
+                    <div class="category-icon-wrapper">
+                        <i data-lucide="{{ cat.icono_svg }}" style="width:28px;height:28px;"></i>
+                    </div>
+                    <div class="category-title">{{ cat.nombre }}</div>
+                    <p class="category-desc">{{ cat.descripcion_breve }}</p>
+                </button>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- ==============================================================
+             SECCIÓN B: GRILLA DINÁMICA DE PRESTADORES Y TIENDAS
+             ============================================================== -->
+        <section id="seccion-directorio" class="mb-5 pt-2">
+            <div class="filter-toolbar d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="badge rounded-pill px-3 py-2" style="background: linear-gradient(135deg, #A8E6CF, #89CFF0); color:#2C3E50; font-weight:700;">
+                        <span id="resultados-contador">{{ total_emprendimientos }} espacios disponibles</span>
+                    </span>
+                    <h3 id="categoria-activa-titulo" class="h6 fw-bold mb-0 ms-1">
+                        Todos los Espacios del Circuito
+                    </h3>
+                </div>
+
+                <div class="search-input-group" style="min-width: 280px;">
+                    <i data-lucide="search" class="search-icon" style="width:17px;height:17px;"></i>
+                    <input type="search"
+                           id="input-busqueda"
+                           class="form-control"
+                           placeholder="Buscar ej: RA Peluquerías, Nutrición, Romina, Bonarda...">
+                </div>
+            </div>
+
+            <!-- Contenedor Reactivo de Tarjetas de Prestadores -->
+            <div id="emprendimientos-grid" class="row g-4">
+                <!-- Renderizado dinámicamente por app.js -->
+            </div>
+        </section>
+
+        <!-- ==============================================================
+             SECCIÓN C: MAPA INTERACTIVO DEL CIRCUITO (GENERAL SAN MARTÍN)
+             ============================================================== -->
+        <section id="seccion-mapa" class="mb-5 pt-3">
+            <div class="d-flex flex-column flex-md-row align-items-md-end justify-content-between mb-3 gap-2">
+                <div>
+                    <span class="text-uppercase fw-bold small" style="color: var(--sage-deep); letter-spacing: 0.06em;">
+                        Recorrido Geográfico Local
+                    </span>
+                    <h2 class="h3 fw-bold mb-1 d-flex align-items-center gap-2">
+                        <i data-lucide="map-pinned" style="width:26px;height:26px;color:#5BC0BE;"></i>
+                        Mapa Interactivo del Circuito · Gral. San Martín
+                    </h2>
+                    <p class="text-secondary small mb-0">
+                        Hacé clic en cualquier marcador para ver su especialidad, dirección en San Martín, abrir su catálogo con turnero o enviarle un WhatsApp.
+                    </p>
+                </div>
+                <div class="small text-secondary">
+                    <span class="badge rounded-pill text-bg-light border">Coordenadas base: -33.081, -68.468</span>
+                </div>
+            </div>
+
+            <div class="map-wrapper-card">
+                <div id="mapa-san-martin" aria-label="Mapa interactivo de emprendimientos en General San Martín, Mendoza"></div>
+            </div>
+        </section>
+
+        <!-- ==============================================================
+             SECCIÓN D: "¡SUMATE AL CAMINO DEL BIENESTAR!" (FORMULARIO)
+             ============================================================== -->
+        <section id="seccion-sumate" class="pt-3">
+            <div class="sumate-section-card">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-5">
+                        <span class="badge rounded-pill px-3 py-2 mb-3" style="background: rgba(168, 230, 207, 0.5); color: #2C3E50; font-weight: 700;">
+                            🌿 Comunidad en Crecimiento Continuo
+                        </span>
+                        <h2 class="h2 fw-bold mb-3">
+                            ¡Sumate al <span class="serif-italic">Camino del Bienestar</span>!
+                        </h2>
+                        <p class="text-secondary mb-3">
+                            ¿Tenés una peluquería, gabinete cosmetológico, espacio de crecimiento personal, bodega, alojamiento o emprendimiento de productos en <strong>General San Martín</strong>?
+                        </p>
+                        <ul class="list-unstyled small text-secondary mb-4">
+                            <li class="mb-2 d-flex align-items-center gap-2">
+                                <i data-lucide="check-circle-2" style="width:18px;height:18px;color:#4A8F74;"></i>
+                                Tu propio catálogo online con precios y botón de turnos directo a tu WhatsApp y Email.
+                            </li>
+                            <li class="mb-2 d-flex align-items-center gap-2">
+                                <i data-lucide="check-circle-2" style="width:18px;height:18px;color:#4A8F74;"></i>
+                                Link privado de autogestión para que actualices tus precios y servicios cuando quieras.
+                            </li>
+                            <li class="d-flex align-items-center gap-2">
+                                <i data-lucide="check-circle-2" style="width:18px;height:18px;color:#4A8F74;"></i>
+                                Presencia destacada en el mapa interactivo de General San Martín.
+                            </li>
+                        </ul>
+
+                        <button class="btn-sumate-nav py-2 px-4"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseFormularioSumate"
+                                aria-expanded="true"
+                                aria-controls="collapseFormularioSumate">
+                            <i data-lucide="sparkles" style="width:18px;height:18px;"></i>
+                            Desplegar / Ocultar Formulario
+                        </button>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="collapse show" id="collapseFormularioSumate">
+                            <div class="p-4 rounded-4" style="background: rgba(255,255,255,0.92); border: 1px solid rgba(118,184,157,0.3);">
+                                <h3 class="h5 fw-bold mb-1">Sumá tu Emprendimiento</h3>
+                                <p class="small text-secondary mb-3">
+                                    Completá los datos de tu actividad en General San Martín para recibir tu link de catálogo propio.
+                                </p>
+
+                                <form id="form-sumate" action="{% url 'catalogo:sumar_emprendimiento' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-semibold">{{ form.nombre.label }} *</label>
+                                            {{ form.nombre }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-semibold">{{ form.titular.label }} *</label>
+                                            {{ form.titular }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-semibold">{{ form.categoria.label }} *</label>
+                                            {{ form.categoria }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-semibold">{{ form.subcategoria.label }} *</label>
+                                            {{ form.subcategoria }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-semibold">{{ form.telefono_whatsapp.label }} *</label>
+                                            {{ form.telefono_whatsapp }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-semibold">{{ form.email.label }}</label>
+                                            {{ form.email }}
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label small fw-semibold">{{ form.direccion.label }} *</label>
+                                            {{ form.direccion }}
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label small fw-semibold">{{ form.descripcion_corta.label }}</label>
+                                            {{ form.descripcion_corta }}
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label small fw-semibold">{{ form.notas_servicios_iniciales.label }} *</label>
+                                            {{ form.notas_servicios_iniciales }}
+                                        </div>
+                                        <div class="col-12 pt-1">
+                                            <button type="submit" class="btn-catalogo-precios mb-0 py-2">
+                                                <i data-lucide="send" style="width:17px;height:17px;"></i>
+                                                Enviar Solicitud de Incorporación
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================================================================
+         MEGA-MODAL DE TIENDA / CATÁLOGO DEL PRESTADOR + TURNERO DIRECTO
+         ================================================================== -->
+    <div class="modal fade modal-glass" id="modalServiciosPrecios" tabindex="-1" aria-labelledby="modalCatalogoNombre" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+            <div class="modal-content overflow-hidden">
+                <!-- Cabecera de la Tienda del Prestador -->
+                <div class="ecommerce-store-header">
+                    <div class="d-flex justify-content-between align-items-start gap-3">
+                        <div>
+                            <span id="modalCatalogoSubcategoria" class="badge rounded-pill mb-2" style="background: rgba(255,255,255,0.92); color:#2C3E50; font-weight:600;">
+                                Categoría
+                            </span>
+                            <h3 class="fw-bold mb-1" id="modalCatalogoNombre">Nombre del Emprendimiento</h3>
+                            <p id="modalCatalogoDescripcion" class="small text-secondary mb-0"></p>
+
+                            <!-- Datos completos del prestador: Titular, Dirección, Teléfono/WhatsApp y Email -->
+                            <div class="store-contact-pills">
+                                <span class="store-contact-pill" id="pillCatalogoTitular">
+                                    <i data-lucide="user-check" style="width:15px;height:15px;color:#4A8F74;"></i>
+                                    <span id="modalCatalogoTitular">Profesional</span>
+                                </span>
+                                <a href="#" target="_blank" rel="noopener" class="store-contact-pill" id="modalCatalogoMaps">
+                                    <i data-lucide="map-pin" style="width:15px;height:15px;color:#3A9694;"></i>
+                                    <span id="modalCatalogoDireccion">Dirección</span>
+                                </a>
+                                <a href="#" target="_blank" rel="noopener" class="store-contact-pill" id="pillCatalogoTelefono">
+                                    <i data-lucide="phone" style="width:15px;height:15px;color:#1B7F43;"></i>
+                                    <span id="modalCatalogoTelefono">Teléfono</span>
+                                </a>
+                                <a href="#" class="store-contact-pill" id="pillCatalogoEmail">
+                                    <i data-lucide="mail" style="width:15px;height:15px;color:#3B9EC9;"></i>
+                                    <span id="modalCatalogoEmail">correo@ejemplo.com</span>
+                                </a>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                </div>
+
+                <!-- Cuerpo del Catálogo E-Commerce + Panel de Reserva de Turno -->
+                <div class="modal-body p-4">
+
+                    <!-- SUB-PANEL DE TURNERO DIRECTO (Se despliega al tocar "Sacar Turno" en cualquier servicio) -->
+                    <div id="turneroDirectoBox" class="turnero-panel-box mb-4 d-none">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <span class="badge rounded-pill mb-1" style="background: rgba(168,230,207,0.6); color:#2C3E50; font-weight:700;">
+                                    📅 Reserva de Turno / Solicitud Directa
+                                </span>
+                                <h5 class="fw-bold mb-0" id="turneroServicioTitulo">Servicio seleccionado</h5>
+                                <small class="text-secondary" id="turneroPrestadorSubtitulo"></small>
+                            </div>
+                            <button type="button" class="btn-close" id="btnCerrarTurnero" aria-label="Cerrar turnero"></button>
+                        </div>
+
+                        <form id="formTurneroDirecto">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-semibold">Tu Nombre y Apellido *</label>
+                                    <input type="text" id="turnoClienteNombre" class="form-control custom-input" required placeholder="Ej: Ana Martínez">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-semibold">Fecha Deseada *</label>
+                                    <input type="date" id="turnoFecha" class="form-control custom-input" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-semibold">Franja Horaria Preferida *</label>
+                                    <select id="turnoFranja" class="form-select custom-input" required>
+                                        <option value="Mañana (9:00 a 13:00 hs)">Mañana (9:00 a 13:00 hs)</option>
+                                        <option value="Siesta (13:30 a 16:30 hs)">Siesta (13:30 a 16:30 hs)</option>
+                                        <option value="Tarde (17:00 a 20:30 hs)">Tarde (17:00 a 20:30 hs)</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-semibold">Nota o consulta adicional (opcional)</label>
+                                    <input type="text" id="turnoNota" class="form-control custom-input" placeholder="Ej: Tengo cabello largo / Prefiero después de las 18 hs...">
+                                </div>
+                                <div class="col-12 d-flex flex-wrap align-items-center justify-content-end gap-2 pt-1">
+                                    <button type="button" id="btnEnviarTurnoEmail" class="btn-action-outline px-3 py-2 d-none">
+                                        <i data-lucide="mail" style="width:16px;height:16px;"></i>
+                                        Enviar Solicitud por Email
+                                    </button>
+                                    <button type="submit" class="btn-sumate-nav px-4 py-2">
+                                        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
+                                        Confirmar y Solicitar Turno por WhatsApp
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Encabezado de Grilla de Servicios/Productos -->
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+                            <i data-lucide="shopping-bag" style="width:19px;height:19px;color:#4A8F74;"></i>
+                            Catálogo de Servicios, Tratamientos y Productos Disponibles
+                        </h6>
+                        <span class="small text-secondary">Seleccioná <strong>"Sacar Turno"</strong> en el servicio deseado</span>
+                    </div>
+
+                    <!-- Grilla de Tarjetas Estilo E-Commerce -->
+                    <div id="modalCatalogoLista" class="row g-3">
+                        <!-- Ítems inyectados dinámicamente por app.js -->
+                    </div>
+                </div>
+
+                <div class="modal-footer border-top-0 px-4 pb-4 pt-0 d-flex justify-content-between flex-wrap gap-2">
+                    <span class="small text-secondary">
+                        📍 Circuito Caminos del Bienestar · General San Martín, Mendoza
+                    </span>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-light rounded-pill px-3" data-bs-dismiss="modal">Cerrar Catálogo</button>
+                        <a id="modalCatalogoWhatsapp" href="#" target="_blank" rel="noopener noreferrer" class="btn-sumate-nav">
+                            <i data-lucide="message-circle" style="width:17px;height:17px;"></i>
+                            Consulta General por WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================================================================
+         PIE DE PÁGINA (FOOTER SIN TEXTO ADMIN)
+         ================================================================== -->
+    <footer class="footer-glass">
+        <div class="container">
+            <div class="row align-items-center justify-content-between g-3">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <a href="{% url 'catalogo:panel_gestion' %}" class="brand-badge text-decoration-none" style="width:32px;height:32px;border-radius:10px;" aria-label="Caminos del Bienestar">
+                            <i data-lucide="leaf" style="width:16px;height:16px;"></i>
+                        </a>
+                        <strong style="font-family: var(--font-heading);">Caminos del Bienestar</strong>
+                    </div>
+                    <p class="small text-secondary mb-0">
+                        Plataforma multi-catálogo de desarrollo local, salud integral, estética consciente y enoturismo en General San Martín, Mendoza.
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end small text-secondary">
+                    <div>Identidad Visual: Verde Calma & Celeste Institucional · General San Martín</div>
+                    <div class="mt-1">
+                        <a href="#inicio" class="text-decoration-none fw-semibold" style="color: var(--sage-deep);">Volver arriba ↑</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Datos JSON seguros de los emprendimientos aprobados -->
+    {{ emprendimientos_json|json_script:"emprendimientos-data" }}
+
+    <!-- Bootstrap 5.3 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Leaflet.js -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Lógica Principal Multi-Catálogo + Turnero -->
+    <script src="{% static 'catalogo/js/app.js' %}"></script>
+    <script>
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
