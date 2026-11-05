@@ -56,10 +56,22 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollWheelZoom: false,
         }).setView([-33.081, -68.468], 14);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        const primaryTileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        const fallbackTileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}';
+
+        const tileLayer = L.tileLayer(primaryTileUrl, {
             maxZoom: 19,
+            referrerPolicy: 'strict-origin-when-cross-origin',
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors · General San Martín, Mendoza',
         }).addTo(map);
+
+        let switchedToFallback = false;
+        tileLayer.on('tileerror', () => {
+            if (!switchedToFallback) {
+                switchedToFallback = true;
+                tileLayer.setUrl(fallbackTileUrl);
+            }
+        });
 
         markersLayer = L.layerGroup().addTo(map);
         updateMapMarkers(emprendimientos);

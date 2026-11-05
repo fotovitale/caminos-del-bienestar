@@ -26,6 +26,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
 ]
 
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
