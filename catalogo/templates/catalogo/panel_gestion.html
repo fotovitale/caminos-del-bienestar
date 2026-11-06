@@ -3,7 +3,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#A8E6CF">
     <title>Gestión General · Caminos del Bienestar (Gral. San Martín)</title>
 
     <!-- Google Fonts -->
@@ -197,11 +198,11 @@
                 </button>
             </div>
 
-            <!-- Barra de Filtro por las 6 Categorías + Buscador -->
+            <!-- Barra de Filtro por las 9 Categorías + Buscador -->
             <div class="filter-toolbar mb-4">
-                <div class="row g-3 align-items-center">
+                <div class="row g-2 g-md-3 align-items-center">
                     <div class="col-12 col-lg-8">
-                        <div class="d-flex flex-wrap gap-2" id="filtros-categorias-admin">
+                        <div class="d-flex gap-2 mobile-chips-scroll" id="filtros-categorias-admin">
                             <button type="button" class="filter-chip-btn active" data-cat-slug="todos">
                                 Todos
                             </button>
@@ -235,7 +236,7 @@
          MODAL 1: CREAR / EDITAR DATOS DEL EMPRENDIMIENTO
          ================================================================== -->
     <div class="modal fade modal-glass" id="modalEditarEmprendimiento" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-fullscreen-sm-down modal-dialog-scrollable">
             <div class="modal-content overflow-hidden">
                 <div class="modal-header modal-header-brand">
                     <div>
@@ -352,7 +353,7 @@
          MODAL 2: GESTOR DE CATÁLOGO DE PRECIOS (SERVICIOS / STOCK)
          ================================================================== -->
     <div class="modal fade modal-glass" id="modalGestionPrecios" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-fullscreen-sm-down modal-dialog-scrollable">
             <div class="modal-content overflow-hidden">
                 <div class="modal-header modal-header-brand">
                     <div>

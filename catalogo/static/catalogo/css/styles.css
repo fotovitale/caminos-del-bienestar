@@ -986,3 +986,321 @@ h1, h2, h3, h4, h5, h6 {
     padding: 1.4rem;
     box-shadow: 0 12px 30px rgba(44, 62, 80, 0.12);
 }
+
+
+/* ==========================================================================
+   OPTIMIZACIÓN MOBILE-FIRST PROFESIONAL (99% TRÁFICO MÓVIL · APP NATIVA)
+   ========================================================================== */
+
+/* Higiene táctil global */
+button, a, input, select, textarea {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+/* Barra de Navegación Inferior Estilo App Nativa (Solo Móvil/Tablet) */
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1035;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-top: 1px solid rgba(118, 184, 157, 0.35);
+    box-shadow: 0 -6px 24px rgba(44, 62, 80, 0.08);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 0.4rem 0.5rem calc(0.4rem + env(safe-area-inset-bottom, 0px));
+}
+
+.mobile-bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.18rem;
+    padding: 0.35rem 0.25rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border-radius: 12px;
+    transition: var(--transition-smooth);
+}
+
+.mobile-bottom-nav-item:active,
+.mobile-bottom-nav-item.active {
+    color: var(--sage-deep);
+    background: rgba(168, 230, 207, 0.32);
+}
+
+.mobile-bottom-nav-item.mobile-nav-cta {
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--sage-calm) 0%, var(--teal-inst) 100%);
+    box-shadow: 0 4px 10px rgba(91, 192, 190, 0.32);
+}
+
+/* Chips horizontales deslizable en móvil */
+.mobile-chips-scroll {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+}
+
+.mobile-chips-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.mobile-chips-scroll .filter-chip-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+@media (min-width: 992px) {
+    .mobile-chips-scroll {
+        flex-wrap: wrap;
+        overflow-x: visible;
+    }
+}
+
+/* Reglas específicas para pantallas de celular (< 768px) */
+@media (max-width: 767.98px) {
+    body {
+        padding-bottom: 76px; /* Espacio para la barra inferior fija */
+    }
+
+    /* Prevenir auto-zoom de iOS Safari en inputs (< 16px hace zoom) */
+    input.form-control,
+    select.form-select,
+    textarea.form-control,
+    .custom-input,
+    .search-input-group input {
+        font-size: 16px !important;
+        min-height: 46px;
+    }
+
+    /* Navbar superior más limpio y compacto en celular */
+    .navbar-glass {
+        padding: 0.55rem 0;
+    }
+
+    .brand-badge {
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+    }
+
+    /* Hero compacto para ver los 9 rubros sin hacer scroll excesivo */
+    .hero-section {
+        padding: 1.4rem 0 1rem;
+    }
+
+    .location-pill {
+        font-size: 0.74rem;
+        padding: 0.32rem 0.8rem;
+    }
+
+    .hero-title {
+        font-size: 1.75rem;
+        line-height: 1.18;
+        margin-top: 0.75rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
+        line-height: 1.45;
+        margin-bottom: 0.75rem;
+        padding: 0 0.25rem;
+    }
+
+    /* Grilla de las 9 Categorías en Celular: 3 columnas tipo App Launcher */
+    .categories-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.55rem;
+        margin-bottom: 1.1rem;
+    }
+
+    .category-card-btn {
+        padding: 0.75rem 0.35rem 0.65rem;
+        border-radius: 15px;
+        min-height: 102px;
+        justify-content: flex-start;
+    }
+
+    .category-card-btn:hover {
+        transform: none;
+    }
+
+    .category-card-btn:active {
+        transform: scale(0.96);
+    }
+
+    .category-icon-wrapper {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        margin-bottom: 0.45rem;
+    }
+
+    .category-icon-wrapper svg {
+        width: 21px !important;
+        height: 21px !important;
+    }
+
+    .category-title {
+        font-size: 0.78rem;
+        line-height: 1.18;
+        margin-bottom: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Ocultar descripción larga en botones de categoría móvil para limpieza visual */
+    .category-desc {
+        display: none;
+    }
+
+    .category-count-badge {
+        top: 6px;
+        right: 6px;
+        font-size: 0.64rem;
+        padding: 0.08rem 0.42rem;
+    }
+
+    /* Barra de herramientas y buscador sticky suave */
+    .filter-toolbar {
+        padding: 0.75rem 0.85rem;
+        border-radius: 16px;
+    }
+
+    /* Tarjetas de Emprendimientos optimizadas para pulgar */
+    .business-card {
+        border-radius: 20px;
+    }
+
+    .business-card-media {
+        height: 155px;
+    }
+
+    .business-card-body {
+        padding: 1.05rem;
+    }
+
+    .business-title {
+        font-size: 1.1rem;
+    }
+
+    .btn-catalogo-precios {
+        min-height: 48px;
+        font-size: 0.92rem;
+        border-radius: 14px;
+    }
+
+    .btn-action-outline {
+        min-height: 42px;
+        font-size: 0.8rem;
+        border-radius: 11px;
+    }
+
+    /* Mapa interactivo cómodo para scrollear la página en celular */
+    .map-wrapper-card {
+        padding: 0.55rem;
+        border-radius: 18px;
+    }
+
+    #mapa-san-martin {
+        height: 340px;
+        border-radius: 14px;
+    }
+
+    /* Sección Sumate compacta en móvil */
+    .sumate-section-card {
+        padding: 1.35rem 1.1rem;
+        border-radius: 20px;
+    }
+
+    /* Modal Fullscreen en móvil: estética de tienda nativa */
+    .modal-fullscreen-sm-down .modal-content {
+        border-radius: 0;
+        border: none;
+    }
+
+    .ecommerce-store-header {
+        padding: 1.1rem 1rem;
+    }
+
+    .store-contact-pills {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+    }
+
+    .store-contact-pills::-webkit-scrollbar {
+        display: none;
+    }
+
+    .store-contact-pill {
+        white-space: nowrap;
+        flex-shrink: 0;
+        font-size: 0.78rem;
+        padding: 0.35rem 0.75rem;
+    }
+
+    .ecommerce-item-card {
+        padding: 1rem;
+        border-radius: 16px;
+    }
+
+    .ecommerce-price-badge {
+        font-size: 1.15rem;
+        padding: 0.25rem 0.75rem;
+    }
+
+    .btn-sacar-turno {
+        min-height: 42px;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .turnero-panel-box {
+        padding: 1.05rem;
+        border-radius: 16px;
+    }
+
+    /* Filas de servicios en Backoffice / Portal Emprendedora apilables en móvil */
+    .service-item-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.65rem;
+        padding: 0.85rem 0.95rem;
+    }
+
+    .service-item-row > div:last-child {
+        width: 100%;
+        justify-content: space-between;
+        border-top: 1px dashed rgba(118, 184, 157, 0.3);
+        padding-top: 0.55rem;
+    }
+
+    .kpi-glass-card {
+        padding: 1rem 1.15rem;
+    }
+
+    .kpi-number {
+        font-size: 1.7rem;
+    }
+
+    .footer-glass {
+        padding: 1.75rem 0 2.5rem;
+        margin-top: 2.5rem;
+    }
+}

@@ -416,6 +416,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 filterByCategory('todos', 'Todos los Espacios del Circuito');
             } else {
                 filterByCategory(slug, `Rubro: ${nombre}`);
+                // En móviles, deslizar suavemente hacia los resultados filtrados
+                if (window.innerWidth < 768) {
+                    const dirSection = document.getElementById('seccion-directorio');
+                    if (dirSection) {
+                        setTimeout(() => {
+                            dirSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 120);
+                    }
+                }
+            }
+        });
+    });
+
+    // Barra de Navegación Inferior Móvil (App Bar)
+    const mobileNavItems = document.querySelectorAll('.mobile-bottom-nav-item');
+    mobileNavItems.forEach(item => {
+        item.addEventListener('click', () => {
+            mobileNavItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            if (item.id === 'mobile-nav-buscar' && searchInput) {
+                setTimeout(() => searchInput.focus(), 350);
+            }
+        });
+    });
+
+    // Cerrar menú hamburguesa automáticamente al tocar un link en móvil
+    document.querySelectorAll('#navbarMain .nav-link, #navbarMain .btn-sumate-nav').forEach(link => {
+        link.addEventListener('click', () => {
+            const navCollapse = document.getElementById('navbarMain');
+            if (navCollapse && navCollapse.classList.contains('show') && typeof bootstrap !== 'undefined') {
+                bootstrap.Collapse.getInstance(navCollapse)?.hide();
             }
         });
     });

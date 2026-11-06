@@ -3,7 +3,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#A8E6CF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Caminos del Bienestar · Multi-Catálogo y Turnos en General San Martín, Mendoza</title>
     <meta name="description" content="Plataforma multi-catálogo, reserva de turnos online y circuito geográfico de bienestar, estética, crecimiento personal, bodegas, alojamiento y productos en General San Martín, Mendoza.">
@@ -181,12 +184,12 @@
                     </h3>
                 </div>
 
-                <div class="search-input-group" style="min-width: 280px;">
+                <div class="search-input-group w-100" style="max-width: 420px;">
                     <i data-lucide="search" class="search-icon" style="width:17px;height:17px;"></i>
                     <input type="search"
                            id="input-busqueda"
                            class="form-control"
-                           placeholder="Buscar ej: RA Peluquerías, Nutrición, Romina, Bonarda...">
+                           placeholder="Buscar ej: RA Peluquerías, Nutrición, Spa, Web...">
                 </div>
             </div>
 
@@ -213,8 +216,8 @@
                         Hacé clic en cualquier marcador para ver su especialidad, dirección en San Martín, abrir su catálogo con turnero o enviarle un WhatsApp.
                     </p>
                 </div>
-                <div class="d-flex align-items-center gap-2 flex-wrap">
-                    <div class="input-group input-group-sm" style="max-width: 310px;">
+                <div class="d-flex align-items-center gap-2 flex-wrap w-100 justify-content-md-end" style="max-width: 460px;">
+                    <div class="input-group input-group-sm flex-grow-1">
                         <input type="text"
                                id="input-buscar-calle-mapa"
                                class="form-control custom-input py-1"
@@ -224,9 +227,9 @@
                             Ubicar
                         </button>
                     </div>
-                    <button type="button" id="btn-centrar-san-martin" class="btn-action-outline py-1 px-3" title="Volver al centro de General San Martín (-33.081, -68.468)">
+                    <button type="button" id="btn-centrar-san-martin" class="btn-action-outline py-1 px-3 flex-shrink-0" title="Volver al centro de General San Martín (-33.081, -68.468)">
                         <i data-lucide="compass" style="width:15px;height:15px;"></i>
-                        Centro San Martín
+                        Centro
                     </button>
                 </div>
             </div>
@@ -344,9 +347,10 @@
 
     <!-- ==================================================================
          MEGA-MODAL DE TIENDA / CATÁLOGO DEL PRESTADOR + TURNERO DIRECTO
+         (Full-screen / Bottom-Sheet en Celulares para experiencia App Nativa)
          ================================================================== -->
     <div class="modal fade modal-glass" id="modalServiciosPrecios" tabindex="-1" aria-labelledby="modalCatalogoNombre" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-sm-down modal-dialog-scrollable">
             <div class="modal-content overflow-hidden">
                 <!-- Cabecera de la Tienda del Prestador -->
                 <div class="ecommerce-store-header">
@@ -492,6 +496,28 @@
         </div>
     </footer>
 
+    <!-- ==================================================================
+         BARRA DE NAVEGACIÓN INFERIOR ESTILO APP NATIVA (SOLO CELULARES)
+         ================================================================== -->
+    <nav class="mobile-bottom-nav d-lg-none" aria-label="Navegación rápida móvil">
+        <a href="#seccion-categorias" class="mobile-bottom-nav-item active" data-nav-target="categorias">
+            <i data-lucide="layout-grid" style="width:20px;height:20px;"></i>
+            <span>Rubros</span>
+        </a>
+        <a href="#seccion-directorio" class="mobile-bottom-nav-item" data-nav-target="directorio" id="mobile-nav-buscar">
+            <i data-lucide="search" style="width:20px;height:20px;"></i>
+            <span>Buscar</span>
+        </a>
+        <a href="#seccion-mapa" class="mobile-bottom-nav-item" data-nav-target="mapa">
+            <i data-lucide="map-pin" style="width:20px;height:20px;"></i>
+            <span>Mapa</span>
+        </a>
+        <a href="#seccion-sumate" class="mobile-bottom-nav-item mobile-nav-cta" data-nav-target="sumate">
+            <i data-lucide="plus-circle" style="width:20px;height:20px;"></i>
+            <span>Sumate</span>
+        </a>
+    </nav>
+
     <!-- Datos JSON seguros de los emprendimientos aprobados -->
     {{ emprendimientos_json|json_script:"emprendimientos-data" }}
 
@@ -504,7 +530,7 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Lógica Principal Multi-Catálogo + Turnero -->
-    <script src="{% static 'catalogo/js/app.js' %}?v=4"></script>
+    <script src="{% static 'catalogo/js/app.js' %}?v=5"></script>
     <script>
         if (window.lucide) {
             window.lucide.createIcons();
