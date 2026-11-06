@@ -16,7 +16,7 @@ def run_seed():
     Emprendimiento.objects.all().delete()
     Categoria.objects.all().delete()
 
-    # 1. Crear las 6 Categorías Principales Oficiales
+    # 1. Crear las 9 Categorías Principales Oficiales
     categorias_info = [
         {
             'nombre': 'Peluquería / Cabello',
@@ -60,13 +60,34 @@ def run_seed():
             'descripcion_breve': 'Cosmética natural, aromaterapia, infusiones y productos regionales.',
             'orden': 6,
         },
+        {
+            'nombre': 'Spa',
+            'slug': 'spa',
+            'icono_svg': 'droplets',
+            'descripcion_breve': 'Circuitos de hidroterapia, masajes descontracturantes y rituales de relax.',
+            'orden': 7,
+        },
+        {
+            'nombre': 'Desarrollo Web',
+            'slug': 'desarrollo-web',
+            'icono_svg': 'code-2',
+            'descripcion_breve': 'Diseño de páginas web, tiendas online, catálogos digitales y sistemas a medida.',
+            'orden': 8,
+        },
+        {
+            'nombre': 'Marketing Digital',
+            'slug': 'marketing-digital',
+            'icono_svg': 'megaphone',
+            'descripcion_breve': 'Gestión de redes sociales, fotografía de marca, publicidad y posicionamiento.',
+            'orden': 9,
+        },
     ]
 
     cat_map = {}
     for c in categorias_info:
         cat_obj = Categoria.objects.create(**c)
         cat_map[c['slug']] = cat_obj
-        print(f"  ✓ Categoría creada ({cat_obj.orden}/6): {cat_obj.nombre}")
+        print(f"  ✓ Categoría creada ({cat_obj.orden}/9): {cat_obj.nombre}")
 
     # 2. Crear Emprendimientos con Direcciones y Coordenadas reales de Gral. San Martín, Mendoza
     # Formato de items: (nombre, categoria_item, detalle_duracion, precio, permite_turno)
@@ -331,6 +352,136 @@ def run_seed():
                 ('Canasta Bienestar Gourmet (Oliva Extra Virgen + Miel + Blend)', 'Regalería', 'Selección de productores de General San Martín', 31000, False),
             ],
         },
+
+        # --- CATEGORÍA 7: SPA (Servicios de Relax, Masajes e Hidroterapia) ---
+        {
+            'categoria': cat_map['spa'],
+            'nombre': 'Oasis del Este · Spa & Circuito Termal Urbano',
+            'titular': 'Lic. Carolina Méndez',
+            'subcategoria': 'Day Spa, Masajes Relajantes & Piedras Calientes',
+            'descripcion_corta': 'Santuario de relajación en General San Martín con circuito hídrico, sauna seco de eucalipto, masoterapia descontracturante y aromaterapia.',
+            'direccion': 'Av. Mitre 380, General San Martín, Mendoza',
+            'latitud': -33.0812,
+            'longitud': -68.4720,
+            'link_google_maps': 'https://www.google.com/maps/search/?api=1&query=-33.0812,-68.4720',
+            'telefono_whatsapp': '+54 9 263 451-8820',
+            'email': 'reservas@oasisdelestespa.com.ar',
+            'token_edicion': 'oasis-del-este-spa-2026',
+            'imagen_url': 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+            'items': [
+                ('Masaje Descontracturante Cuerpo Completo + Piedras Calientes', 'Masoterapia', '60 min · Alivio muscular profundo con aceites esenciales tibios', 26000, True),
+                ('Circuito de Hidroterapia & Sauna Botánico + Infusión', 'Circuito Spa', '90 min · Jacuzzi templado, ducha escocesa y sala de relax', 34000, True),
+                ('Experiencia Day Spa "Renovación Total" (Individual o Parejas)', 'Day Spa', '3 hs · Circuito hídrico + masaje relajante + limpieza facial + merienda saludable', 58000, True),
+                ('Masaje Californiano & Reflexología Podal', 'Masoterapia', '70 min · Movimientos largos y fluidos para reducir el estrés', 28500, True),
+            ],
+        },
+        {
+            'categoria': cat_map['spa'],
+            'nombre': 'Ámbar Spa Holístico & Masoterapia',
+            'titular': 'Valeria & Rocío Domínguez',
+            'subcategoria': 'Rituales Corporales, Drenaje Linfático & Fangoterapia',
+            'descripcion_corta': 'Espacio cálido y silencioso enfocado en terapias manuales, drenaje linfático manual, exfoliaciones botánicas y bienestar físico.',
+            'direccion': 'Calle Sarmiento 215, General San Martín, Mendoza',
+            'latitud': -33.0796,
+            'longitud': -68.4642,
+            'link_google_maps': 'https://www.google.com/maps/search/?api=1&query=-33.0796,-68.4642',
+            'telefono_whatsapp': '+54 9 263 467-3310',
+            'email': 'turnos@ambarspaholistico.com.ar',
+            'token_edicion': 'ambar-spa-holistico-2026',
+            'imagen_url': 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80',
+            'items': [
+                ('Drenaje Linfático Manual Corporal + Presoterapia', 'Terapias Corporales', '60 min · Estimula la circulación y alivia piernas cansadas', 24500, True),
+                ('Ritual Corporal de Fangoterapia Termal & Exfoliación', 'Rituales de Spa', '75 min · Renovación dérmica con fango mineral mendocino', 31000, True),
+                ('Masaje Craneofacial, Cervical & Cuencos Tibetanos', 'Masoterapia', '50 min · Ideal para bruxismo, cefaleas y tensión cervical', 22000, True),
+                ('Voucher Regalo "Tarde de Spa en San Martín"', 'Gift Cards', 'Tarjeta personalizada física o digital lista para regalar', 35000, False),
+            ],
+        },
+
+        # --- CATEGORÍA 8: DESARROLLO WEB (Servicios Digitales y Sistemas para Emprendedores) ---
+        {
+            'categoria': cat_map['desarrollo-web'],
+            'nombre': 'Andes Digital Studio · Desarrollo Web & E-Commerce',
+            'titular': 'Ing. Lucas & Sofía Vitale',
+            'subcategoria': 'Sitios Web Profesionales, Tiendas Online & Turneros',
+            'descripcion_corta': 'Estudio de desarrollo de software en General San Martín. Creamos páginas web rápidas, catálogos interactivos con WhatsApp, tiendas online y sistemas a medida.',
+            'direccion': 'Av. Lima 165, General San Martín, Mendoza',
+            'latitud': -33.0825,
+            'longitud': -68.4701,
+            'link_google_maps': 'https://www.google.com/maps/search/?api=1&query=-33.0825,-68.4701',
+            'telefono_whatsapp': '+54 9 263 455-9100',
+            'email': 'hola@andesdigitalstudio.com.ar',
+            'token_edicion': 'andes-digital-web-2026',
+            'imagen_url': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+            'items': [
+                ('Landing Page Profesional para Emprendedoras y Profesionales', 'Páginas Web', 'Diseño moderno adaptable a celulares + botón de WhatsApp + formulario + dominio .com.ar', 145000, True),
+                ('Tienda Online / Catálogo Autogestionable con Turnero', 'E-Commerce', 'Panel propio para cargar productos/servicios, precios y reservas online', 240000, True),
+                ('Mantenimiento Web, Hosting SSL & Actualización Mensual', 'Soporte Técnico', 'Abono mensual · Copias de seguridad, cambios de precios y soporte prioritario', 28000, True),
+                ('Consultoría Técnica & Diagnóstico de Sitio Web (1 hora)', 'Asesorías', 'Reunión presencial en San Martín u online por Meet', 20000, True),
+            ],
+        },
+        {
+            'categoria': cat_map['desarrollo-web'],
+            'nombre': 'Código Este · Soluciones Web & Automatización',
+            'titular': 'Agustina & Tomás Pereyra',
+            'subcategoria': 'Diseño UI/UX, Aplicaciones Web & Sistemas de Gestión',
+            'descripcion_corta': 'Impulsamos negocios del Este mendocino con sitios web de alta conversión, cartas digitales QR para bodegas/gastronomía y sistemas en la nube.',
+            'direccion': 'Calle Lavalle 290, General San Martín, Mendoza',
+            'latitud': -33.0798,
+            'longitud': -68.4688,
+            'link_google_maps': 'https://www.google.com/maps/search/?api=1&query=-33.0798,-68.4688',
+            'telefono_whatsapp': '+54 9 263 472-4090',
+            'email': 'proyectos@codigoeste.com.ar',
+            'token_edicion': 'codigo-este-web-2026',
+            'imagen_url': 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80',
+            'items': [
+                ('Web Institucional + Catálogo Digital QR', 'Desarrollo Web', 'Ideal para bodegas, hoteles, centros de estética y consultorios', 165000, True),
+                ('Rediseño Visual UI/UX & Optimización de Velocidad Web', 'Diseño UI/UX', 'Modernización completa de tu página actual para captar más clientes', 110000, True),
+                ('Integración de Pagos (Mercado Pago) y Reservas Automáticas', 'Integraciones', 'Configuración llave en mano sobre tu sitio web', 65000, True),
+            ],
+        },
+
+        # --- CATEGORÍA 9: MARKETING DIGITAL (Redes Sociales, Publicidad y Branding) ---
+        {
+            'categoria': cat_map['marketing-digital'],
+            'nombre': 'Impulso Creativo · Agencia de Marketing & Redes',
+            'titular': 'Lic. Martina Quiroga',
+            'subcategoria': 'Community Management, Creación de Contenido & Meta Ads',
+            'descripcion_corta': 'Agencia de marketing digital en General San Martín especializada en marcas de bienestar, estética, bodegas y comercios locales.',
+            'direccion': 'Calle Bailén 148, General San Martín, Mendoza',
+            'latitud': -33.0815,
+            'longitud': -68.4650,
+            'link_google_maps': 'https://www.google.com/maps/search/?api=1&query=-33.0815,-68.4650',
+            'telefono_whatsapp': '+54 9 263 460-2280',
+            'email': 'martina@impulsocreativo.com.ar',
+            'token_edicion': 'impulso-creativo-mkt-2026',
+            'imagen_url': 'https://images.unsplash.com/photo-1557838923-2985c318be48?auto=format&fit=crop&w=800&q=80',
+            'items': [
+                ('Plan Mensual Redes Sociales "Presencia Activa" (Instagram + Facebook)', 'Social Media', '12 posteos/carruseles + 4 Reels editados + calendario de historias y copywriting', 135000, True),
+                ('Gestión de Campañas Publicitarias en Meta Ads & Google Ads', 'Publicidad Digital', 'Segmentación en General San Martín y Gran Mendoza para atraer turnos y ventas', 75000, True),
+                ('Jornada de Producción de Reels & Fotografía de Marca en tu Local', 'Creación de Contenido', 'Sesión de 2 hs en San Martín · Entrega de 8 Reels listos y 25 fotos editadas', 85000, True),
+                ('Asesoría 1 a 1: Auditoría de Instagram y Estrategia de Ventas', 'Consultoría', '60 min · Optimización de biografía, destacados y embudo de WhatsApp', 28000, True),
+            ],
+        },
+        {
+            'categoria': cat_map['marketing-digital'],
+            'nombre': 'Bruma Estudio · Branding & Estrategia Digital',
+            'titular': 'DG. Florencia & Julián Moyano',
+            'subcategoria': 'Identidad Visual, Diseño de Marca & Posicionamiento Local',
+            'descripcion_corta': 'Diseñamos la identidad visual de tu emprendimiento, kits para redes sociales, fotografía de producto y posicionamiento en Google Maps.',
+            'direccion': 'Av. España 310, General San Martín, Mendoza',
+            'latitud': -33.0838,
+            'longitud': -68.4671,
+            'link_google_maps': 'https://www.google.com/maps/search/?api=1&query=-33.0838,-68.4671',
+            'telefono_whatsapp': '+54 9 263 449-6540',
+            'email': 'estudio@brumabranding.com.ar',
+            'token_edicion': 'bruma-estudio-mkt-2026',
+            'imagen_url': 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80',
+            'items': [
+                ('Diseño de Identidad Visual & Logo para Emprendimientos', 'Branding', 'Logo principal, paleta de colores, tipografías y plantillas editables en Canva', 115000, True),
+                ('Optimización de Perfil de Google Maps (SEO Local San Martín)', 'Posicionamiento SEO', 'Configuración completa para aparecer primero cuando buscan tu rubro en la zona', 42000, True),
+                ('Pack 10 Plantillas Personalizadas para Historias y Feed', 'Diseño Digital', 'Adaptadas a la estética de tu marca listas para usar', 48000, False),
+            ],
+        },
     ]
 
     for emp_data in emprendimientos_info:
@@ -362,7 +513,7 @@ def run_seed():
     admin_user.save()
     print("  ✓ Superusuario configurado: usuario 'admin' / contraseña 'bienestar2026'")
 
-    print("\n✨ Seed completado con éxito: 6 categorías y 12 emprendimientos locales activos.")
+    print("\n✨ Seed completado con éxito: 9 categorías y 18 emprendimientos locales activos.")
 
 
 if __name__ == '__main__':

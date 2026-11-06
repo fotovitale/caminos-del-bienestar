@@ -223,7 +223,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
-   SECCIÓN A: CATÁLOGO DE 6 BOTONES PRINCIPALES (GRILLA RESPONSIVE 6 COLUMNAS)
+   SECCIÓN A: CATÁLOGO DE 9 BOTONES PRINCIPALES (GRILLA RESPONSIVE 3x3)
    ========================================================================== */
 .categories-grid {
     display: grid;
@@ -232,16 +232,10 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 1.5rem;
 }
 
-@media (min-width: 576px) {
+@media (min-width: 768px) {
     .categories-grid {
         grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (min-width: 1100px) {
-    .categories-grid {
-        grid-template-columns: repeat(6, 1fr);
-        gap: 1rem;
+        gap: 1.05rem;
     }
 }
 

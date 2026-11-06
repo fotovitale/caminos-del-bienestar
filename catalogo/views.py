@@ -123,8 +123,8 @@ def _serialize_emprendimiento(emp):
 
 
 def index(request):
-    # Si la base de datos en PythonAnywhere estuviera recién creada sin seed, ejecuta seed automático
-    if not Categoria.objects.exists():
+    # Si la base de datos tiene menos de 9 categorías, carga automáticamente las categorías y ejemplos iniciales
+    if Categoria.objects.count() < 9:
         try:
             from seed_data import run_seed
             run_seed()
