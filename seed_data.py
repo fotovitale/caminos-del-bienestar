@@ -16,7 +16,7 @@ def run_seed():
     Emprendimiento.objects.all().delete()
     Categoria.objects.all().delete()
 
-    # 1. Crear las 9 Categorías Principales Oficiales
+    # 1. Crear las 11 Categorías Principales Oficiales ('Otros Productos' siempre al final)
     categorias_info = [
         {
             'nombre': 'Peluquería / Cabello',
@@ -33,53 +33,67 @@ def run_seed():
             'orden': 2,
         },
         {
+            'nombre': 'Maquilladoras',
+            'slug': 'maquilladoras',
+            'icono_svg': 'palette',
+            'descripcion_breve': 'Maquillaje social, novias, egresadas, perfilado y autocomakeup.',
+            'orden': 3,
+        },
+        {
+            'nombre': 'Manicuristas',
+            'slug': 'manicuristas',
+            'icono_svg': 'gem',
+            'descripcion_breve': 'Belleza de manos y pies, kapping, semipermanente, soft gel y nail art.',
+            'orden': 4,
+        },
+        {
             'nombre': 'Crecimiento Personal',
             'slug': 'crecimiento-personal',
             'icono_svg': 'flower-2',
             'descripcion_breve': 'Psicología, coaching ontológico, mindfulness y bienestar integral.',
-            'orden': 3,
+            'orden': 5,
         },
         {
             'nombre': 'Vinos',
             'slug': 'vinos',
             'icono_svg': 'wine',
             'descripcion_breve': 'Bodegas locales, degustaciones del Bonarda y enoturismo del Este.',
-            'orden': 4,
+            'orden': 6,
         },
         {
             'nombre': 'Alojamiento',
             'slug': 'alojamiento',
             'icono_svg': 'bed-double',
             'descripcion_breve': 'Hoteles, posadas entre viñedos y estadías de descanso reparador.',
-            'orden': 5,
+            'orden': 7,
         },
         {
             'nombre': 'Spa',
             'slug': 'spa',
             'icono_svg': 'droplets',
             'descripcion_breve': 'Circuitos de hidroterapia, masajes descontracturantes y rituales de relax.',
-            'orden': 6,
+            'orden': 8,
         },
         {
             'nombre': 'Desarrollo Web',
             'slug': 'desarrollo-web',
             'icono_svg': 'code-2',
             'descripcion_breve': 'Diseño de páginas web, tiendas online, catálogos digitales y sistemas a medida.',
-            'orden': 7,
+            'orden': 9,
         },
         {
             'nombre': 'Marketing Digital',
             'slug': 'marketing-digital',
             'icono_svg': 'megaphone',
             'descripcion_breve': 'Gestión de redes sociales, fotografía de marca, publicidad y posicionamiento.',
-            'orden': 8,
+            'orden': 10,
         },
         {
             'nombre': 'Otros Productos',
             'slug': 'otros-productos',
             'icono_svg': 'shopping-bag',
             'descripcion_breve': 'Cosmética natural, aromaterapia, infusiones y productos regionales.',
-            'orden': 9,
+            'orden': 11,
         },
     ]
 
@@ -87,7 +101,7 @@ def run_seed():
     for c in categorias_info:
         cat_obj = Categoria.objects.create(**c)
         cat_map[c['slug']] = cat_obj
-        print(f"  ✓ Categoría creada ({cat_obj.orden}/9): {cat_obj.nombre}")
+        print(f"  ✓ Categoría creada ({cat_obj.orden}/11): {cat_obj.nombre}")
 
     # 2. Crear Emprendimientos con Direcciones y Coordenadas reales de Gral. San Martín, Mendoza
     # Formato de items: (nombre, categoria_item, detalle_duracion, precio, permite_turno)
@@ -482,6 +496,92 @@ def run_seed():
                 ('Pack 10 Plantillas Personalizadas para Historias y Feed', 'Diseño Digital', 'Adaptadas a la estética de tu marca listas para usar', 48000, False),
             ],
         },
+
+        # --- CATEGORÍA MAQUILLADORAS ---
+        {
+            'categoria': cat_map['maquilladoras'],
+            'nombre': 'Glow Studio · Makeup & Visagismo',
+            'titular': 'Agustina Rivarola (MUA)',
+            'subcategoria': 'Maquillaje Social, Novias & Clases de Automaquillaje',
+            'descripcion_corta': 'Estudio de maquillaje profesional en General San Martín. Productos hipoalergénicos de larga duración, preparación de piel glow y atención a domicilio para novias.',
+            'direccion': 'Calle Chacabuco 174, General San Martín, Mendoza',
+            'latitud': -33.0819,
+            'longitud': -68.4675,
+            'link_google_maps': 'https://www.google.com/maps/search/?api=1&query=-33.0819,-68.4675',
+            'telefono_whatsapp': '+54 9 263 454-1190',
+            'email': 'agustina@glowstudiomua.com.ar',
+            'token_edicion': 'glow-studio-makeup-2026',
+            'imagen_url': 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=800&q=80',
+            'items': [
+                ('Maquillaje Social Blindado + Pestañas Postizas', 'Maquillaje Social', '60 min · Preparación de piel hidratante, productos waterproof y fijación 16 hs', 32000, True),
+                ('Pack Novia / Quinceañera (Prueba Previa + Día del Evento)', 'Novias y Eventos', 'Incluye diseño de look personalizado, skincare luminoso y kit de retoque', 78000, True),
+                ('Clase Personalizada de Automaquillaje (2 horas)', 'Cursos y Talleres', 'Aprendé a usar tus productos, técnica de día y transformación a noche', 35000, True),
+                ('Perfilado de Cejas + Laminado & Tinte Nutritivo', 'Mirada', '45 min · Diseño armónico según tus facciones', 16500, True),
+            ],
+        },
+        {
+            'categoria': cat_map['maquilladoras'],
+            'nombre': 'Atelier Aura · Maquillaje Profesional',
+            'titular': 'Florencia & Micaela Soria',
+            'subcategoria': 'Maquillaje Editorial, Egresadas & Pieles Maduras',
+            'descripcion_corta': 'Especialistas en realzar la belleza natural con acabados satinados, técnicas para pieles maduras, madrinas, egresadas y producciones fotográficas.',
+            'direccion': 'Av. Alem 390, General San Martín, Mendoza',
+            'latitud': -33.0801,
+            'longitud': -68.4708,
+            'link_google_maps': 'https://www.google.com/maps/search/?api=1&query=-33.0801,-68.4708',
+            'telefono_whatsapp': '+54 9 263 468-7230',
+            'email': 'turnos@atelieraura.com.ar',
+            'token_edicion': 'atelier-aura-makeup-2026',
+            'imagen_url': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80',
+            'items': [
+                ('Maquillaje Social Noche / Egresadas & Madrinas', 'Maquillaje Social', '60 min · Técnica de ojos esfumados o delineado gráfico + pestañas por grupito', 30000, True),
+                ('Maquillaje Especial Pieles Maduras (Efecto Lifting Luminoso)', 'Maquillaje Social', '60 min · Texturas ligeras que no marcan líneas de expresión', 31000, True),
+                ('Lifting de Pestañas Nutritivo con Keratina + Tinte', 'Mirada', '50 min · Curvatura natural por 6 semanas', 18500, True),
+            ],
+        },
+
+        # --- CATEGORÍA MANICURISTAS ---
+        {
+            'categoria': cat_map['manicuristas'],
+            'nombre': 'Nails & Co. · Estudio de Manicuría Rusa',
+            'titular': 'Antonella & Sofía Vega',
+            'subcategoria': 'Kapping Gel, Semipermanente, Soft Gel & Nail Art',
+            'descripcion_corta': 'Estudio especializado en salud y estética de uñas en General San Martín. Esterilización en autoclave, manicuría rusa combinada y diseños en tendencia.',
+            'direccion': 'Calle 9 de Julio 265, General San Martín, Mendoza',
+            'latitud': -33.0820,
+            'longitud': -68.4660,
+            'link_google_maps': 'https://www.google.com/maps/search/?api=1&query=-33.0820,-68.4660',
+            'telefono_whatsapp': '+54 9 263 457-8940',
+            'email': 'hola@nailsandcosanmartin.com.ar',
+            'token_edicion': 'nails-and-co-manicuria-2026',
+            'imagen_url': 'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80',
+            'items': [
+                ('Esmaltado Semipermanente + Manicuría Rusa Combinada', 'Manos', '60 min · Limpieza profunda de cutículas e hidratación con óleo de almendras', 16500, True),
+                ('Kapping con Gel / BaseNiveladora sobre Uña Natural', 'Manos', '75 min · Aporta resistencia para que tus uñas crezcan sanas sin quebrarse', 21000, True),
+                ('Sistema Soft Gel (Extensión de Uñas + Esmaltado)', 'Esculpidas', '90 min · Largo y forma a elección (almendra, coffin o cuadrada) + 2 diseños', 25500, True),
+                ('Belleza Integral de Pies + Esmaltado Semipermanente', 'Pies', '60 min · Exfoliación botánica, retiro de durezas y esmaltado duradero', 19500, True),
+            ],
+        },
+        {
+            'categoria': cat_map['manicuristas'],
+            'nombre': 'Rosa Cuarzo · Nail Bar & Spa de Manos',
+            'titular': 'Melina Quiroga',
+            'subcategoria': 'Uñas Esculpidas, Polygel & Spa Botánico de Manos y Pies',
+            'descripcion_corta': 'Un rincón delicado en San Martín para consentir tus manos y pies mientras disfrutás una infusión. Especialista en French, Baby Boomer y Polygel.',
+            'direccion': 'Calle Albuera 310, General San Martín, Mendoza',
+            'latitud': -33.0793,
+            'longitud': -68.4712,
+            'link_google_maps': 'https://www.google.com/maps/search/?api=1&query=-33.0793,-68.4712',
+            'telefono_whatsapp': '+54 9 263 462-5011',
+            'email': 'melina@rosacuarzonails.com.ar',
+            'token_edicion': 'rosa-cuarzo-nails-2026',
+            'imagen_url': 'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80',
+            'items': [
+                ('Uñas Esculpidas en Polygel + Diseño French o Baby Boomer', 'Esculpidas', '100 min · Acabado natural, resistente y delicado', 27000, True),
+                ('Spa Botánico de Manos (Parafinoterapia + Masaje + Semipermanente)', 'Spa de Manos', '70 min · Nutrición intensa para piel seca y cutículas', 20500, True),
+                ('Service / Mantenimiento de Kapping o Esculpidas + Cambio de Color', 'Mantenimiento', '75 min · Recomendado cada 21 días', 19000, True),
+            ],
+        },
     ]
 
     for emp_data in emprendimientos_info:
@@ -513,7 +613,7 @@ def run_seed():
     admin_user.save()
     print("  ✓ Superusuario configurado: usuario 'admin' / contraseña 'bienestar2026'")
 
-    print("\n✨ Seed completado con éxito: 9 categorías y 18 emprendimientos locales activos.")
+    print("\n✨ Seed completado con éxito: 11 categorías y 22 emprendimientos locales activos.")
 
 
 if __name__ == '__main__':

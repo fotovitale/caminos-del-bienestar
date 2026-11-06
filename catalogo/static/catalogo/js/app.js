@@ -31,13 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoryColors = {
         'peluqueria-cabello': 'linear-gradient(135deg, #76B89D, #5BC0BE)',
         'cosmetologia': 'linear-gradient(135deg, #89CFF0, #5BC0BE)',
+        'maquilladoras': 'linear-gradient(135deg, #68B2A0, #5BC0BE)',
+        'manicuristas': 'linear-gradient(135deg, #89CFF0, #76B89D)',
         'crecimiento-personal': 'linear-gradient(135deg, #68B2A0, #4A8F74)',
         'vinos': 'linear-gradient(135deg, #5BC0BE, #3B9EC9)',
         'alojamiento': 'linear-gradient(135deg, #76B89D, #4B9CD3)',
-        'otros-productos': 'linear-gradient(135deg, #5BC0BE, #76B89D)',
         'spa': 'linear-gradient(135deg, #76B89D, #3A9694)',
         'desarrollo-web': 'linear-gradient(135deg, #3B9EC9, #5BC0BE)',
         'marketing-digital': 'linear-gradient(135deg, #4A8F74, #5BC0BE)',
+        'otros-productos': 'linear-gradient(135deg, #5BC0BE, #76B89D)',
     };
 
     // Fecha mínima por defecto hoy en el selector de turnos

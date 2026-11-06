@@ -123,19 +123,16 @@ def _serialize_emprendimiento(emp):
 
 
 def index(request):
-    # Si la base de datos tiene menos de 9 categorías, carga automáticamente las categorías y ejemplos iniciales
-    if Categoria.objects.count() < 9:
+    # Si la base de datos tiene menos de 11 categorías, carga automáticamente las 11 categorías y ejemplos
+    if Categoria.objects.count() < 11:
         try:
             from seed_data import run_seed
             run_seed()
         except Exception:
             pass
     else:
-        # Garantizar que 'Otros Productos' quede siempre en la última posición (orden 9)
-        Categoria.objects.filter(slug='spa').update(orden=6)
-        Categoria.objects.filter(slug='desarrollo-web').update(orden=7)
-        Categoria.objects.filter(slug='marketing-digital').update(orden=8)
-        Categoria.objects.filter(slug='otros-productos').update(orden=9)
+        # Garantizar siempre que 'Otros Productos' quede en la última posición (orden 99)
+        Categoria.objects.filter(slug='otros-productos').update(orden=99)
 
     categorias = Categoria.objects.annotate(
         aprobados_count=Count('emprendimientos', filter=Q(emprendimientos__aprobado=True))
