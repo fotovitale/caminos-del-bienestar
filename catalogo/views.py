@@ -130,6 +130,12 @@ def index(request):
             run_seed()
         except Exception:
             pass
+    else:
+        # Garantizar que 'Otros Productos' quede siempre en la última posición (orden 9)
+        Categoria.objects.filter(slug='spa').update(orden=6)
+        Categoria.objects.filter(slug='desarrollo-web').update(orden=7)
+        Categoria.objects.filter(slug='marketing-digital').update(orden=8)
+        Categoria.objects.filter(slug='otros-productos').update(orden=9)
 
     categorias = Categoria.objects.annotate(
         aprobados_count=Count('emprendimientos', filter=Q(emprendimientos__aprobado=True))
